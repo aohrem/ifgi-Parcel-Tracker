@@ -1,0 +1,147 @@
+body {
+	background-image:url(images/body_background.jpg);
+	font-family: Calibri, Arial, sans-serif; }
+
+#content {
+	margin: 10px auto;
+	width: 80%;
+	max-width: 1300px;
+	min-width: 700px;
+	/* border: 1px solid black; */
+	background-color: #ffffff;
+	text-align: center;
+	padding: 20px;
+	-moz-box-shadow:    0px 0px 10px #999999;
+	-webkit-box-shadow: 0px 0px 10px #999999;
+	box-shadow:         0px 0px 10px #999999;}
+
+#head {
+	width: 100%;
+	height: 100px;
+/* 	background-color: #267241; */
+	background-image:url(images/header_background.png);
+	text-align: left;
+	vertical-align: middle;
+	color: #FFFFFF;
+	font-size: 40pt;
+	display: compact;}
+
+#headline {
+	padding: 20px;
+}
+	
+#menue {
+	margin-bottom:5px;
+	padding: 5px 0px;
+	border-top: 5px solid #F6E71D;
+	border-bottom: 5px solid #F6E71D;
+	text-align: center;
+	color: #267241;
+	background-image:url(images/button_background.jpg);
+}
+
+#menue ul {
+	padding: 0px;
+	/* padding-left: 10px; */
+	margin: 0px;
+	margin-bottom: 20px;
+	list-style-type: none;
+}
+
+#menue ul  li {
+	float: left;
+/* 	margin-top: 4px; */
+/* 	margin-right: 15px; */
+/* 	font-weight: bold; */
+	padding-top:1px;
+	font-size: 130%;
+	position:relative;
+	top:-2px;
+	height:30px;
+}
+
+#menue ul li a {
+	padding: 4px 25px 0px;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+#menue ul li a:hover {
+	color: #ffffff;
+	background-image:url(images/button_background_hover.jpg);
+	-moz-box-shadow:    inset 0px 0px 3px #6f6f6f;
+	-webkit-box-shadow: inset 0px 0px 3px #6f6f6f;
+	box-shadow:         inset 0px 0px 3px #6f6f6f;
+}
+
+#menue ul li.active a {
+	color: #ffffff;
+	background-image:url(images/button_background_active.jpg);
+}
+
+#menue ul li.seperator {
+	width:1px;
+	height: 23px;
+	border-left:1px solid #dddddd;
+}
+
+#main {
+	width: 100%;
+	text-align: justify;
+	background-image:url(images/ifgi_logo.png);
+	background-position:bottom right;
+	background-repeat:no-repeat;
+}
+	
+#details {
+	width:80%;
+	min-width:600px;
+	text-align:center;
+	margin-left:auto;
+	margin-right:auto;
+	border:1px solid #000000;
+	min-height: 400px;
+	background-color: #EFEFEF; }
+	
+.detailmenue {
+	width:80%;
+	min-width:600px;
+	text-align:center;
+	margin-left:auto;
+	margin-right:auto;
+}
+	
+.input {
+	width: 300px;
+	border: 1px solid #AAAAAA;
+	padding: 4px;}
+	
+.front {
+	width:150px;}
+
+.mintab {
+	padding:0px 20px 0px 0px;}
+	
+.redfield {
+	border: 1px solid #ff0000;
+	background-color:#FFD0D0;}
+
+.headtitle {
+	position:relative;
+	left:15px;
+	top:-25px;}
+
+.headlogo {
+	position:relative;
+	left:0px;
+	top:-7px;}
+	
+.formtable {
+	width:50%;}
+
+.formtable tr td {
+	padding:3px;
+	margin:0;}
+
+.topaligned {
+	vertical-align: top;}
