@@ -1,2 +1,12 @@
-				<h1>Paket nicht gefunden</h1>
-				<p>Die angegebene Feed ID ist entweder nicht numerisch, oder wurde nicht in der Datenbank gefunden.</p>
+				<h1>Package not found</h1>
+				<p>The feed ID is not numeric or could not be found in the database.</p>
+				<form action='index.php' method='get'>
+					<input type='hidden' name='site' value='details'>
+					<table style='max-width:50%;' border='0' cellpadding='3' cellspacing='0'>
+						<tr>
+							<td class='mintab'>ID:</td>
+							<td class='mintab'><input type='text' name='feedid' value='{feedid}' size='5'></td>
+							<td class='mintab'><input type='submit' value='Search package'></td>
+						</tr>
+					</table>
+				</form>

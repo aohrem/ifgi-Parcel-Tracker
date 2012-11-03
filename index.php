@@ -114,6 +114,7 @@
 		
 		if ( ! is_numeric($feedid) || ! isset($row->feedid) ) {
 			$replaces[] = array('content', read_tpl('error_feedid'));
+			$replaces[] = array('feedid', $feedid);
 		}
 		else {
 			$replaces[] = array('content', read_tpl('details_content'));
