@@ -1,29 +1,30 @@
+<!DOCTYPE html>
 <html>
 	<head>
-		<title>Ifgi Parcel Tracker</title>
-		<link rel='stylesheet' type='text/css' href='style_allgemein.css'>
-		<link rel='stylesheet' type='text/css' href='style_desktop.css' media='screen'>
-		<link rel='stylesheet' type='text/css' href='style_mobil.css' media='handheld'>
-		<meta http-equiv='expires' content='0'>
+		<title>ifgi Parcel Tracker</title>
+		<link rel='stylesheet' type='text/css' href='css/style_allgemein.css'>
+		<link rel='stylesheet' type='text/css' href='css/style_mobil.css' media='handheld'>
+		<meta charset='UTF-8'>
 	</head>
-	
 	<body>
 		<div id='content'>
-			<div id='head'>
-				<div id='headline'><img src='images/logo.png' alt='Logo' width='119' height='75' class='headlogo'>
-				<span class='headtitle'>ifgi Parcel Tracker</span></div>
-			</div>
-			<div id='menue'>
+			<header>
+				<div id='headline'>
+					<img src='images/logo.png' alt='Logo' width='119' height='75' class='headlogo'>
+					<span class='headtitle'>ifgi Parcel Tracker</span>
+				</div>
+			</header>
+			<nav>
 				<ul>
 					<li><a href='index.php'>Home</a></li>
 					<li class='seperator'>&nbsp;</li>
-					<li><a href='index.php?site=add&amp;step=1'>Package Registration</a></li>
+					<li><a href='index.php?s=register'>Parcel Registration</a></li>
 					<li class='seperator'>&nbsp;</li>
-					<li><a href='index.php?site=search'>Package Search</a></li>
+					<li><a href='index.php?s=search'>Parcel Search</a></li>
 				</ul>
-			</div>
+			</nav>
 			<div id='main'>
-				{content}
+{content}
 			</div>
 		</div>
 	</body>

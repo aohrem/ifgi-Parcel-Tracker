@@ -1,5 +1,5 @@
 <?php
- class Sql {
+class Sql {
 	private $server = 'localhost';
     private $user = 'root';
 	private $password = '';

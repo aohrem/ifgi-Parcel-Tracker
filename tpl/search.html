@@ -1,12 +1,12 @@
-				<h1>Package Search</h1>
-				<p>Please type in the ID of the package you want to search for.</p>
-				<form action='index.php' method='get'>
-					<input type='hidden' name='site' value='details'>
-					<table style='max-width:50%;' border='0' cellpadding='3' cellspacing='0'>
-						<tr>
-							<td class='mintab'>ID:</td>
-							<td class='mintab'><input type='text' name='feedid' size='5'></td>
-							<td class='mintab'><input type='submit' value='Search package'></td>
-						</tr>
-					</table>
-				</form>
+<h1>Parcel Search</h1>
+<p>Please type in the ID of the parcel you want to search for.</p>
+<form action='index.php' method='get'>
+	<input type='hidden' name='s' value='details'>
+		<table class='maxhalfsizetable'>
+			<tr>
+			<td class='mintab'>Parcel ID:</td>
+			<td class='mintab'><input type='text' name='fid' size='5' maxlength='5' class='input searchinput'></td>
+			<td class='mintab'><input type='submit' value='Search parcel' class='input'></td>
+		</tr>
+	</table>
+</form>

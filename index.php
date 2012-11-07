@@ -1,133 +1,124 @@
 <?php
- include('sql.php');
- 
- function tpl_replace($tpl, $replaces) {
-	for ( $i = 0; $i < sizeof($replaces); $i++ ) {
-		$tpl = str_replace('{'.$replaces[$i][0].'}', $replaces[$i][1], $tpl);
-	}
-	return $tpl;
- }
- 
- function read_tpl($filename) {
-	$f = fopen('tpl/'.$filename.'.html', 'r');
-    return fread($f, filesize('tpl/'.$filename.'.html'));
- }
- 
- $replaces = array();
- 
- $f = fopen('tpl/main.html', 'r');
- $tpl = fread($f, filesize('tpl/main.html'));
- 
- if ( isset($_GET['site']) ) {
-	$site = $_GET['site'];
- }
- else {
-	$site = 'home';
- }
- 
- if ( isset($_GET['step']) ) {
-	$step = $_GET['step'];
- }
- 
- if ( isset($step) && file_exists('tpl/'.$site.'_step_'.$step.'.html') ) {
-	$site_tpl = read_tpl($site.'_step_'.$step);
- }
- elseif ( file_exists('tpl/'.$site.'.html') ) {
-	$site_tpl = read_tpl($site);
- }
- else {
-	$site_tpl = 'Fehler - Datei \'tpl/'.$site.'.html\' existiert nicht.';
- }
- 
- $replaces[] = array('content', $site_tpl);
- 
- switch ( $site ) {
-	case 'add';
-		switch ( $step ) {
-			case 2:
-				$feedid = rand(10000,99999);
-				$replaces[] = array('feedid', $feedid);
-			break;
-			case 3:
-				$feedid = htmlentities(mysql_real_escape_string($_GET['feedid']));
-				$replaces[] = array('feedid', $feedid);
+include('sql.inc.php');
+include('functions.inc.php');
+
+//load main template file
+$tpl = read_tpl('main');
+
+// get current site and set content template
+if ( isset($_GET['s']) ) {
+	$s = mysql_real_escape_string($_GET['s']);
+	$content_tpl = $s;
+}
+else {
+	$s = '';
+	$content_tpl = 'home';
+}
+
+// get current page and extend content template if it's set
+if ( isset($_GET['p']) ) {
+	$p = mysql_real_escape_string($_GET['p']);
+	$content_tpl .= '_'.$p;
+}
+else {
+	$p = '';
+}
+
+// replace content placeholder with content template file
+$tpl = tpl_replace($tpl, 'content', read_tpl($content_tpl));
+
+// differentiate between sites
+switch ( $s ) {
+	// home page
+	case '':
+	break;
+	// registration process
+	case 'register':
+		switch ( $p ) {
+			case '':
+				// initialise template placeholder replacements with empty strings
 				$errormsg = '';
+				$redfieldto = '';
+				$redfieldfrom = '';
+				$valueto = '';
+				$valuefrom = '';
+				$description = '';
 				
+				// if all necessary post data is there, check data
 				if ( isset($_POST['to']) && isset($_POST['from']) && isset($_POST['description']) ) {
 					$to = mysql_real_escape_string(htmlentities($_POST['to']));
 					$from = mysql_real_escape_string(htmlentities($_POST['from']));
 					$description = mysql_real_escape_string($_POST['description']);
 					
-					if ( $to == '' ) {
-						$errormsg = '<p>Sie haben nicht alle erforderlichen Felder ausgef&uuml;llt.</p>';
-						$replaces[] = array('redfieldto', ' redfield');
-					}
-					else {
-						$replaces[] = array('redfieldto', '');
-					}
-					if ( $from == '' ) {
-						$errormsg = '<p>Sie haben nicht alle erforderlichen Felder ausgef&uuml;llt.</p>';
-						$replaces[] = array('redfieldfrom', ' redfield');
-					}
-					else {
-						$replaces[] = array('redfieldfrom', '');
-					}
-					
-					$db = new Sql();
-					$check = $db->fetch('SELECT `feedid` FROM `potwc`.`parcels` WHERE `feedid`=\''.$feedid.'\'');
-					if ( ! isset($check->feedid) ) {
-						if ( $errormsg == '' ) {
-							$db->query('INSERT INTO `potwc`.`parcels` ( `feedid`, `from`, `to`, `description`, `time` ) VALUES (\''.$feedid.'\', \''.$to.'\', \''.$from.'\', \''.$description.'\', \''.time().'\')');
-							header('Location: index.php?site=add&step=4&feedid='.$feedid);
+					// check, if mandatory fields are not filled
+					if ( $to == '' || $from == '' ) {
+						$errormsg = 'You did not fill all mandatory fields.';
+						$valueto = ' value=\''.$to.'\'';
+						$valuefrom = ' value=\''.$from.'\'';
+						
+						if ( $to == '' ) {
+							$redfieldto = ' redfield';
+						}
+						if ( $from == '' ) {
+							$redfieldfrom = ' redfield';
 						}
 					}
+					// if everything is right, insert data into database table
 					else {
-						$errormsg = '<p>Die Feed ID existiert bereits in unserer Datenbank und konnte nicht erstellt werden.</p>';
+						// add cosm integration here!
+						$feedid = rand(10000,99999);
+						
+						// new database connection
+						$db = new Sql();
+						$db->query('INSERT INTO `potwc`.`parcels` ( `feedid`, `from`, `to`, `description`, `time` ) VALUES (\''.$feedid.'\', \''.$to.'\', \''.$from.'\', \''.$description.'\', \''.time().'\')');
+						
+						// redirect to the "parcel can be send" site
+						header('Location: index.php?s=register&p=finished&fid='.$feedid);
 					}
-					
-					if ( $errormsg != '' ) {
-						$replaces[] = array('valueto', ' value=\''.$to.'\'');
-						$replaces[] = array('valuefrom', ' value=\''.$from.'\'');
-						$replaces[] = array('valuedescription', $description);
-					}
-				}
-				else {
-					$replaces[] = array('redfieldto', '');
-					$replaces[] = array('redfieldfrom', '');
-					$replaces[] = array('valueto', '');
-					$replaces[] = array('valuefrom', '');
-					$replaces[] = array('valuedescription', '');
 				}
 				
-				$replaces[] = array('errormsg', $errormsg);
+				// replace template placeholders
+				$tpl = tpl_replace($tpl, 'errormsg', '<p>'.$errormsg.'</p>');
+				$tpl = tpl_replace($tpl, 'redfieldto', $redfieldto);
+				$tpl = tpl_replace($tpl, 'redfieldfrom', $redfieldfrom);
+				$tpl = tpl_replace($tpl, 'valueto', $valueto);
+				$tpl = tpl_replace($tpl, 'valuefrom', $valuefrom);
+				$tpl = tpl_replace($tpl, 'valuedescription', $description);
 			break;
-			case 4:
-				$feedid = htmlentities(mysql_real_escape_string($_GET['feedid']));				
-				$replaces[] = array('feedid', $feedid);
+			case 'finished':
+				replace_feedid();
 			break;
 		}
 	break;
+	// package details
 	case 'details':
-		$feedid = trim(htmlentities($_GET['feedid']));
+		$feedid = trim(htmlentities($_GET['fid']));
 		$db = new Sql();
 		$row = $db->fetch('SELECT * FROM `potwc`.`parcels` WHERE `feedid`=\''.$feedid.'\'');
 		
+		// give an error, if parcel id was not found or the parcel id is not numeric
 		if ( ! is_numeric($feedid) || ! isset($row->feedid) ) {
-			$replaces[] = array('content', read_tpl('error_feedid'));
-			$replaces[] = array('feedid', $feedid);
+			header('Location: index.php?s=error&p=feed_id_not_found&fid='.$feedid);
 		}
 		else {
-			$replaces[] = array('content', read_tpl('details_content'));
-			$replaces[] = array('time', date('d.m.Y, H:i', $row->time).' Uhr');
-			$replaces[] = array('from', htmlentities($row->from));
-			$replaces[] = array('to', htmlentities($row->to));
-			$replaces[] = array('description', nl2br(htmlentities($row->description)));
+			// replace template placeholdes with values from the database
+			$tpl = tpl_replace($tpl, 'feedid', $feedid);
+			$tpl = tpl_replace($tpl, 'time', date('d.m.Y, H:i', $row->time).' Uhr');
+			$tpl = tpl_replace($tpl, 'from', htmlentities($row->from));
+			$tpl = tpl_replace($tpl, 'to', htmlentities($row->to));
+			$tpl = tpl_replace($tpl, 'description', nl2br(htmlentities($row->description)));
 		}
-		$replaces[] = array('feedid', $feedid);
 	break;
- }
- 
- $tpl = tpl_replace($tpl, $replaces);
- 
- print $tpl;
+	// error handling
+	case 'error':
+		switch ( $p ) {
+			case 'feed_id_not_found':
+				replace_feedid();
+			break;
+		}
+	break;
+}
+
+// print whole webseite
+print $tpl;
 ?>

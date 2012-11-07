@@ -1,0 +1,24 @@
+<h1>Parcel Registration</h1>
+<p>Please type in the mandatory fields to register a new parcel.</p>
+{errormsg}
+<form action='index.php?s=register' method='post'>
+	<table class='halfsizetable'>
+		<tr>
+			<td>Send from: *</td>
+			<td><input type='text' name='from' class='registerinput input{redfieldfrom}'{valuefrom}></td>
+		</tr>
+		<tr>
+			<td>Destination: *</td>
+			<td><input type='text' name='to' class='registerinput input{redfieldto}'{valueto}></td>
+		</tr>
+		<tr>
+			<td class='topaligned'>Description:</td>
+			<td><textarea rows='4' name='description' class='registerinput input'>{valuedescription}</textarea></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type='submit' value='Submit' class='input'></td>
+		</tr>
+	</table>
+</form>
+<p>* mandatory field</p>
