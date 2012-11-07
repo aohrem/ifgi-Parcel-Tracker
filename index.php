@@ -86,7 +86,7 @@ switch ( $s ) {
 				$tpl = tpl_replace($tpl, 'valuedescription', $description);
 			break;
 			case 'finished':
-				replace_feedid();
+				$tpl = replace_feedid($tpl);
 			break;
 		}
 	break;
@@ -113,7 +113,7 @@ switch ( $s ) {
 	case 'error':
 		switch ( $p ) {
 			case 'feed_id_not_found':
-				replace_feedid();
+				$tpl = replace_feedid($tpl);
 			break;
 		}
 	break;

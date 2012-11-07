@@ -10,7 +10,7 @@ function tpl_replace($tpl, $old, $new) {
 }
 
 // if there is a feed id, replace the template placeholder with it
-function replace_feedid() {
+function replace_feedid($tpl) {
 	if ( isset($_GET['fid']) ) {
 		$feedid = htmlentities($_GET['fid']);
 	}
@@ -18,5 +18,6 @@ function replace_feedid() {
 		$feedid = '';
 	}
 	$tpl = tpl_replace($tpl, 'feedid', $feedid);
+	return $tpl;
 }
 ?>
