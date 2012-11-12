@@ -71,6 +71,9 @@ nav ul li.seperator {
 	width:1px;
 	height: 23px;
 	border-left: 1px solid #dddddd;}
+	
+nav ul li.search {
+	/**/}
 
 #main {
 	display: block;
