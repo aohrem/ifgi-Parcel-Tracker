@@ -70,7 +70,7 @@ switch ( $s ) {
 						
 						// new database connection
 						$db = new Sql();
-						$db->query('INSERT INTO `potwc`.`parcels` ( `feedid`, `from`, `to`, `description`, `time` ) VALUES (\''.$feedid.'\', \''.$to.'\', \''.$from.'\', \''.$description.'\', \''.time().'\')');
+						$db->query('INSERT INTO `potwc`.`parcels` ( `feedid`, `from`, `to`, `description`, `time` ) VALUES (\''.$feedid.'\', \''.$to.'\', \''.$from.'\', \''.$description.'\', \''.date("YmdHis",time()).'\')');
 						
 						// redirect to the "parcel can be send" site
 						header('Location: index.php?s=register&p=finished&fid='.$feedid);
@@ -103,7 +103,7 @@ switch ( $s ) {
 		else {
 			// replace template placeholdes with values from the database
 			$tpl = tpl_replace($tpl, 'feedid', $feedid);
-			$tpl = tpl_replace($tpl, 'time', date('d.m.Y, H:i', $row->time).' Uhr');
+			$tpl = tpl_replace($tpl, 'time', date('d.m.Y, H:i', strtotime($row->time)));
 			$tpl = tpl_replace($tpl, 'from', htmlentities($row->from));
 			$tpl = tpl_replace($tpl, 'to', htmlentities($row->to));
 			$tpl = tpl_replace($tpl, 'description', nl2br(htmlentities($row->description)));
