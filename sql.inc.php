@@ -9,12 +9,10 @@ class Sql {
 	
     public function __construct() {
         if ( ! ($this->mysql_connection = mysql_connect($this->server, $this->user, $this->password)) ) {
-			print 'Connection to database failed';
-			die;
+			die('Connection to database failed');
 		}
 		if ( ! mysql_select_db($this->database) ) {
-			print 'Selection of database failed';
-			die;
+			die('Connection to database failed');
 		}
     }
 	

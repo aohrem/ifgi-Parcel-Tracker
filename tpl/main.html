@@ -19,11 +19,15 @@
 					<li><a href='index.php'>Home</a></li>
 					<li class='seperator'>&nbsp;</li>
 					<li><a href='index.php?s=register'>Parcel Registration</a></li>
-					<li class='seperator'>&nbsp;</li>
-					<li><a href='index.php?s=search'>Parcel Search</a></li>
-					<li class='seperator'>&nbsp;</li>
-					<li class='search'>Search _________</li>
 				</ul>
+				<div id='search'>
+					<form action='index.php' method='get'>
+						<input type='hidden' name='s' value='details' class='hidden'>
+						<div><input type='image' src='images/search.png' class='searchsubmit' alt='Search'></div>
+						<div class='searchinput'><input type='text' name='fid' value='Parcel ID' class='searchinput' onfocus='if(this.value == "Parcel ID") { this.value = ""; }'></div>
+						<div class='searchtext'>Search Parcel:</div>
+					</form>
+				</div>
 			</nav>
 			<div id='main'>
 {content}

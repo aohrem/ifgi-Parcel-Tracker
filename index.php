@@ -70,7 +70,8 @@ switch ( $s ) {
 						
 						// new database connection
 						$db = new Sql();
-						$db->query('INSERT INTO `potwc`.`parcels` ( `feedid`, `from`, `to`, `description`, `time` ) VALUES (\''.$feedid.'\', \''.$to.'\', \''.$from.'\', \''.$description.'\', \''.date("YmdHis",time()).'\')');
+						$db->query('INSERT INTO `potwc`.`parcels` ( `feedid`, `from`, `to`, `description`, `time` )
+							VALUES (\''.$feedid.'\', \''.$to.'\', \''.$from.'\', \''.$description.'\', \''.date("YmdHis",time()).'\')');
 						
 						// redirect to the "parcel can be send" site
 						header('Location: index.php?s=register&p=finished&fid='.$feedid);
@@ -109,9 +110,21 @@ switch ( $s ) {
 			$tpl = tpl_replace($tpl, 'description', nl2br(htmlentities($row->description)));
 			
 			// get data from cosm API
-			include('readcosmapi.inc.php');
+			include('read_cosm_api.inc.php');
 			$cosmAPI = new ReadCosmAPI($feedid);
-			print $cosmAPI->read();
+			if ( ! $xml = $cosmAPI->read() ) {
+				die('Could not read cosm API');
+			}
+			else {
+				// parse xml document given by the cosm API
+				$xml = simplexml_load_string($xml);				
+				
+				// show some example stuff from the xml document
+				$tpl = tpl_replace($tpl, 'details', 'Feed title: '.$xml->environment->title.'<br>
+					Status: '.$xml->environment->status.'<br>
+					Location: '.$xml->environment->location['exposure'].', '.$xml->environment->location['disposition'].'<br>
+					Lat: '.$xml->environment->location->lat.' Lon: '.$xml->environment->location->lon);
+			}
 		}
 	break;
 	// error handling
