@@ -46,8 +46,8 @@ switch ( $s ) {
 				
 				// if all necessary post data is there, check data
 				if ( isset($_POST['to']) && isset($_POST['from']) && isset($_POST['description']) ) {
-					$to = mysql_real_escape_string(htmlentities($_POST['to']));
-					$from = mysql_real_escape_string(htmlentities($_POST['from']));
+					$to = mysql_real_escape_string($_POST['to']);
+					$from = mysql_real_escape_string($_POST['from']);
 					$description = mysql_real_escape_string($_POST['description']);
 					
 					// check, if mandatory fields are not filled
