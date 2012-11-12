@@ -107,6 +107,11 @@ switch ( $s ) {
 			$tpl = tpl_replace($tpl, 'from', htmlentities($row->from));
 			$tpl = tpl_replace($tpl, 'to', htmlentities($row->to));
 			$tpl = tpl_replace($tpl, 'description', nl2br(htmlentities($row->description)));
+			
+			// get data from cosm API
+			include('readcosmapi.inc.php');
+			$cosmAPI = new ReadCosmAPI($feedid);
+			print $cosmAPI->read();
 		}
 	break;
 	// error handling
