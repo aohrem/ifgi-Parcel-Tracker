@@ -9,6 +9,11 @@ function tpl_replace($tpl, $old, $new) {
 	return $tpl;
 }
 
+function read_xml($filename) {
+	$f = fopen('xml/'.$filename.'.xml', 'r');
+    return fread($f, filesize('xml/'.$filename.'.xml'));
+}
+
 // if there is a feed id, replace the template placeholder with it
 function replace_feedid($tpl) {
 	if ( isset($_GET['fid']) ) {

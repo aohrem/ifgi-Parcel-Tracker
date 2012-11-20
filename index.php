@@ -31,6 +31,9 @@ $tpl = tpl_replace($tpl, 'content', read_tpl($content_tpl));
 switch ( $s ) {
 	// home page
 	case '':
+		include('cosm_api.inc.php');
+		$cosmAPI = new CosmAPI();
+		print $cosmAPI->createFeed();
 	break;
 	// registration process
 	case 'register':
@@ -110,9 +113,9 @@ switch ( $s ) {
 			$tpl = tpl_replace($tpl, 'description', nl2br(htmlentities($row->description)));
 			
 			// get data from cosm API
-			include('read_cosm_api.inc.php');
-			$cosmAPI = new ReadCosmAPI($feedid);
-			if ( ! $xml = $cosmAPI->read() ) {
+			include('cosm_api.inc.php');
+			$cosmAPI = new CosmAPI();
+			if ( ! $xml = $cosmAPI->readFeed($feedid) ) {
 				die('Could not read cosm API');
 			}
 			else {
