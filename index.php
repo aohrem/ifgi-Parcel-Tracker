@@ -2,7 +2,7 @@
 include('sql.inc.php');
 include('functions.inc.php');
 
-//load main template file
+// load main template file
 $tpl = read_tpl('main');
 
 // get current site and set content template
