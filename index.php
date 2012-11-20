@@ -31,9 +31,6 @@ $tpl = tpl_replace($tpl, 'content', read_tpl($content_tpl));
 switch ( $s ) {
 	// home page
 	case '':
-		include('cosm_api.inc.php');
-		$cosmAPI = new CosmAPI();
-		print $cosmAPI->createFeed();
 	break;
 	// registration process
 	case 'register':
