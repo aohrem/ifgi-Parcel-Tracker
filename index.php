@@ -30,7 +30,7 @@ $tpl = tpl_replace($tpl, 'content', read_tpl($content_tpl));
 // differentiate between sites
 switch ( $s ) {
 	// home page
-	case '':
+	case '':	
 	break;
 	// registration process
 	case 'register':
@@ -65,13 +65,14 @@ switch ( $s ) {
 					}
 					// if everything is right, insert data into database table
 					else {
-						// add cosm integration here!
-						$feedid = rand(10000,99999);
+						include('cosm_api.inc.php');
+						$cosm_api = new CosmAPI();
+						$feedid = $cosm_api->createFeed();
 						
 						// new database connection
 						$db = new Sql();
 						$db->query('INSERT INTO `potwc`.`parcels` ( `feedid`, `from`, `to`, `description`, `time` )
-							VALUES (\''.$feedid.'\', \''.$to.'\', \''.$from.'\', \''.$description.'\', \''.date("YmdHis",time()).'\')');
+							VALUES (\''.$feedid.'\', \''.$from.'\', \''.$to.'\', \''.$description.'\', \''.date("YmdHis",time()).'\')');
 						
 						// redirect to the "parcel can be send" site
 						header('Location: index.php?s=register&p=finished&fid='.$feedid);
@@ -112,7 +113,7 @@ switch ( $s ) {
 			// get data from cosm API
 			include('cosm_api.inc.php');
 			$cosmAPI = new CosmAPI();
-			if ( ! $xml = $cosmAPI->readFeed($feedid) ) {
+			if ( ! $xml = $cosmAPI->readFeed($feedid, '', '', '') ) {
 				die('Could not read cosm API');
 			}
 			else {

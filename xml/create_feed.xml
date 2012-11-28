@@ -1,7 +1,28 @@
 <eeml xmlns="http://www.eeml.org/xsd/0.5.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="0.5.1" xsi:schemaLocation="http://www.eeml.org/xsd/0.5.1 http://www.eeml.org/xsd/0.5.1/0.5.1.xsd">
-  <environment>
-    <title>Cosm Office environment</title>
-    <data id="0" />
-    <data id="1" />
-  </environment>
+	<environment creator="https://cosm.com/users/hdr">
+		<title>{title}</title>
+		<private>true</private>
+		<location disposition="mobile">
+			<lat></lat>
+			<lon></lon>
+		</location>
+		<data id="0">
+			<tag>latitude</tag>
+		</data>
+		<data id="1">
+			<tag>longitude</tag>
+		</data>
+		<data id="2">
+			<tag>temperature</tag>
+		</data>
+		<data id="3">
+			<tag>humidity</tag>
+		</data>
+		<data id="4">
+			<tag>acceleration</tag>
+		</data>
+		<data id="5">
+			<tag>brightness</tag>
+		</data>
+	</environment>
 </eeml>
