@@ -1,7 +1,12 @@
 <?php
 function read_tpl($filename) {
-	$f = fopen('tpl/'.$filename.'.html', 'r');
-    return fread($f, filesize('tpl/'.$filename.'.html'));
+	if (!file_exists('tpl/'.$filename.'.html')) {
+		return fread(fopen('tpl/error.html', 'r'), filesize('tpl/error.html'));
+	}
+	else {
+		$f = fopen('tpl/'.$filename.'.html', 'r');
+		return fread($f, filesize('tpl/'.$filename.'.html'));
+	}
 }
 
 function tpl_replace($tpl, $old, $new) {

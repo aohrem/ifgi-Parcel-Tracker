@@ -45,7 +45,8 @@ switch ( $s ) {
 				$description = '';
 				
 				// if all necessary post data is there, check data
-				if ( isset($_POST['to']) && isset($_POST['from']) && isset($_POST['description']) ) {
+				if ( isset($_POST['title']) && isset($_POST['to']) && isset($_POST['from']) && isset($_POST['description']) ) {
+					$title = mysql_real_escape_string($_POST['title']);
 					$to = mysql_real_escape_string($_POST['to']);
 					$from = mysql_real_escape_string($_POST['from']);
 					$description = mysql_real_escape_string($_POST['description']);
@@ -65,14 +66,18 @@ switch ( $s ) {
 					}
 					// if everything is right, insert data into database table
 					else {
+						if ($title == '')
+							{
+							$title = date('Ymdhis');
+							}
 						include('cosm_api.inc.php');
 						$cosm_api = new CosmAPI();
-						$feedid = $cosm_api->createFeed();
+						$feedid = $cosm_api->createFeed($title);
 						
 						// new database connection
 						$db = new Sql();
-						$db->query('INSERT INTO `potwc`.`parcels` ( `feedid`, `from`, `to`, `description`, `time` )
-							VALUES (\''.$feedid.'\', \''.$from.'\', \''.$to.'\', \''.$description.'\', \''.date("YmdHis",time()).'\')');
+						$db->query('INSERT INTO `potwc`.`parcels` ( `feedid`, `title`, `from`, `to`, `description`, `time` )
+							VALUES (\''.$feedid.'\', \''.$title.'\', \''.$from.'\', \''.$to.'\', \''.$description.'\', \''.date('YmdHis',time()).'\')');
 						
 						// redirect to the "parcel can be send" site
 						header('Location: index.php?s=register&p=finished&fid='.$feedid);
