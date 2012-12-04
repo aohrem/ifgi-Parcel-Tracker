@@ -90,6 +90,7 @@ switch ( $s ) {
 				$tpl = tpl_replace($tpl, 'redfieldfrom', $redfieldfrom);
 				$tpl = tpl_replace($tpl, 'valueto', $valueto);
 				$tpl = tpl_replace($tpl, 'valuefrom', $valuefrom);
+				$tpl = tpl_replace($tpl, 'valuetitle', $valuetitle);
 				$tpl = tpl_replace($tpl, 'valuedescription', $description);
 			break;
 			case 'finished':

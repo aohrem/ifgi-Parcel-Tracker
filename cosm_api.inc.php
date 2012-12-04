@@ -27,9 +27,9 @@ class CosmAPI {
 		return file_get_contents($this->url.'/'.$feedid.'.xml?key='.$this->api_key.$start.$end.$interval, false, $context);
 	}
 	
-	public function createFeed() {
+	public function createFeed($title) {
 		$xml = read_xml('create_feed');
-		$xml = tpl_replace($xml, 'title', date('YmdHis', time()));
+		$xml = tpl_replace($xml, 'title', $title);
 		
 		$ch = curl_init($this->url.'.xml?key='.$this->api_key);
 		
