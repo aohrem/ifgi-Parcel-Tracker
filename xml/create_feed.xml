@@ -2,7 +2,6 @@
 	<environment creator="https://cosm.com/users/hdr">
 		<title>{title}</title>
 		<private>true</private>
-		<time>{time}</time>
 		<location disposition="mobile">
 			<lat></lat>
 			<lon></lon>

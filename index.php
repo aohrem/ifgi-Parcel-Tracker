@@ -100,7 +100,7 @@ switch ( $s ) {
 		}
 	break;
 	// package details
-	case 'details':
+	case 'details':	
 		$feedid = trim(htmlentities($_GET['fid']));
 		$db = new Sql();
 		$row = $db->fetch('SELECT * FROM `potwc`.`parcels` WHERE `feedid`=\''.$feedid.'\'');
@@ -111,27 +111,45 @@ switch ( $s ) {
 		}
 		else {
 			// replace template placeholdes with values from the database
+			$tpl = tpl_replace($tpl, 'information', read_tpl('information'));
 			$tpl = tpl_replace($tpl, 'title', htmlentities($row->title));
 			$tpl = tpl_replace($tpl, 'time', date('d.m.Y, g:i a', strtotime($row->time)));
 			$tpl = tpl_replace($tpl, 'from', htmlentities($row->from));
 			$tpl = tpl_replace($tpl, 'to', htmlentities($row->to));
 			$tpl = tpl_replace($tpl, 'description', nl2br(htmlentities($row->description)));
+			$tpl = tpl_replace($tpl, 'feedid', $feedid);
 			
-			// get data from cosm API
-			include('cosm_api.inc.php');
-			$cosmAPI = new CosmAPI();
-			if ( ! $xml = $cosmAPI->readFeed($feedid, '', '', '') ) {
-				die('Could not read cosm API');
+			// if there's no or a wrong page set, use stats page as default
+			if ( $p != 'stats' && $p != 'diagram' && $p != 'map' ) {
+				$p = 'stats';
 			}
-			else {
-				// parse xml document given by the cosm API
-				$xml = simplexml_load_string($xml);				
-				
-				// show some example stuff from the xml document
-				$tpl = tpl_replace($tpl, 'details', 'Feed title: '.$xml->environment->title.'<br>
-					Status: '.$xml->environment->status.'<br>
-					Location: '.$xml->environment->location['exposure'].', '.$xml->environment->location['disposition'].'<br>
-					Lat: '.$xml->environment->location->lat.' Lon: '.$xml->environment->location->lon);
+			
+			// show stats, diagram or map
+			switch ( $p ) {
+				case 'stats':
+					// get data from cosm API
+					include('cosm_api.inc.php');
+					$cosmAPI = new CosmAPI();
+					if ( ! $xml = $cosmAPI->readFeed($feedid, '', '', '') ) {
+						die('Could not read cosm API');
+					}
+					else {
+						// parse xml document given by the cosm API
+						$xml = simplexml_load_string($xml);				
+						
+						// show some example stuff from the xml document
+						$tpl = tpl_replace($tpl, 'details', 'Feed title: '.$xml->environment->title.'<br>
+							Status: '.$xml->environment->status.'<br>
+							Location: '.$xml->environment->location['exposure'].', '.$xml->environment->location['disposition'].'<br>
+							Lat: '.$xml->environment->location->lat.' Lon: '.$xml->environment->location->lon);
+					}
+				break;
+				case 'diagram':
+					
+				break;
+				case 'map':
+					
+				break;
 			}
 		}
 	break;
