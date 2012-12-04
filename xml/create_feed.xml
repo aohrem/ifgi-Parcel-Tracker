@@ -2,26 +2,27 @@
 	<environment creator="https://cosm.com/users/hdr">
 		<title>{title}</title>
 		<private>true</private>
+		<time>{time}</time>
 		<location disposition="mobile">
 			<lat></lat>
 			<lon></lon>
 		</location>
-		<data id="0">
+		<data id="lat">
 			<tag>latitude</tag>
 		</data>
-		<data id="1">
+		<data id="lon">
 			<tag>longitude</tag>
 		</data>
-		<data id="2">
+		<data id="temp">
 			<tag>temperature</tag>
 		</data>
-		<data id="3">
+		<data id="hum">
 			<tag>humidity</tag>
 		</data>
-		<data id="4">
+		<data id="acc">
 			<tag>acceleration</tag>
 		</data>
-		<data id="5">
+		<data id="brig">
 			<tag>brightness</tag>
 		</data>
 	</environment>
