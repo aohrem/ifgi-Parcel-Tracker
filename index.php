@@ -42,6 +42,7 @@ switch ( $s ) {
 				$redfieldfrom = '';
 				$valueto = '';
 				$valuefrom = '';
+				$valuetitle = '';
 				$description = '';
 				
 				// if all necessary post data is there, check data
@@ -110,7 +111,7 @@ switch ( $s ) {
 		}
 		else {
 			// replace template placeholdes with values from the database
-			$tpl = tpl_replace($tpl, 'feedid', $feedid);
+			$tpl = tpl_replace($tpl, 'title', htmlentities($row->title));
 			$tpl = tpl_replace($tpl, 'time', date('d.m.Y, g:i a', strtotime($row->time)));
 			$tpl = tpl_replace($tpl, 'from', htmlentities($row->from));
 			$tpl = tpl_replace($tpl, 'to', htmlentities($row->to));
