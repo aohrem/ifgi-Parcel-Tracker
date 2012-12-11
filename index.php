@@ -130,18 +130,50 @@ switch ( $s ) {
 					// get data from cosm API
 					include('cosm_api.inc.php');
 					$cosmAPI = new CosmAPI();
-					if ( ! $xml = $cosmAPI->readFeed($feedid, '', '', '') ) {
+					
+					// set parameters for the cosm-API request
+					$start = date('Y-m-d\TH:i:s\Z', time() - 21600);	// 21600 = 6 hours, 604800 = one week
+					$end = date('Y-m-d\TH:i:s\Z', time());
+					$interval = 0;
+					$per_page = 500;
+					
+					if ( ! $xml = $cosmAPI->readFeed($feedid, $start, $end, $per_page, $interval, '') ) {
 						die('Could not read cosm API');
 					}
 					else {
-						// parse xml document given by the cosm API
-						$xml = simplexml_load_string($xml);				
+						// parse xml string
+						$dataArray = $cosmAPI->parseXML($xml);
 						
-						// show some example stuff from the xml document
-						$tpl = tpl_replace($tpl, 'details', 'Feed title: '.$xml->environment->title.'<br>
-							Status: '.$xml->environment->status.'<br>
-							Location: '.$xml->environment->location['exposure'].', '.$xml->environment->location['disposition'].'<br>
-							Lat: '.$xml->environment->location->lat.' Lon: '.$xml->environment->location->lon);
+						// replace debugxml in template
+						$tpl = tpl_replace($tpl, 'debugxml', htmlentities($xml));
+						
+						if ( $dataArray ) {
+							// sort sensor data by timestamp (keys of the data array)
+							ksort($dataArray, SORT_NUMERIC);
+							
+							// iterate sensor data
+							foreach ( $dataArray as $time => $val ) {
+								// if there is no data, show a -
+								if ( ! isset($val['lat']) ) { $val['lat'] = '-'; }
+								if ( ! isset($val['lon']) ) { $val['lon'] = '-'; }
+								if ( ! isset($val['temp']) ) { $val['temp'] = '-'; }
+								if ( ! isset($val['hum']) ) { $val['hum'] = '-'; }
+								if ( ! isset($val['acc']) ) { $val['acc'] = '-'; }
+								if ( ! isset($val['brig']) ) { $val['brig'] = '-'; }
+								
+								// copy table row and fill in sensor data for one timestamp
+								$tpl = copy_code($tpl, 'tableRow');
+								$tpl = tpl_replace_once($tpl, 't', date('d.m.Y H:i', $time));
+								$tpl = tpl_replace_once($tpl, 'lat', $val['lat']);
+								$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
+								$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
+								$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
+								$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
+								$tpl = tpl_replace_once($tpl, 'brig', $val['brig']);
+							}
+						}
+						// delete the last row
+						$tpl = clean_code($tpl, 'tableRow');
 					}
 				break;
 				case 'diagram':

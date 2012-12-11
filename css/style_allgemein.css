@@ -132,8 +132,6 @@ h2 {
 	min-width: 600px;
 	text-align: left;
 	margin-top: 15px;
-	margin-left: auto;
-	margin-right: auto;
 	border: 1px solid #999999;
 	min-height: 400px;
 	background-color: #EFEFEF;
@@ -157,8 +155,38 @@ h2 {
 .detailmenue {
 	width: 80%;
 	min-width: 600px;
-	margin-left: auto;
-	margin-right: auto;}
+	padding-left: 20px;
+	padding-bottom: 11px;}
+
+.detailmenue ul {
+	padding: 0px;
+	list-style-type: none;
+	display: inline;}
+
+.detailmenue ul  li {
+	float: left;
+	height: 27px;
+	margin-right: 10px;
+	-moz-box-shadow: 0px 0px 10px #999999;
+	-webkit-box-shadow: 0px 0px 10px #999999;
+	box-shadow: 0px 0px 10px #999999;}
+
+.detailmenue ul li a {
+	padding: 2px 25px;
+	color: #ffffff;
+	text-decoration: none;
+	background-image: url(../images/button_background.jpg);}
+
+.detailmenue ul li a:hover {
+	color: #ffffff;
+	background-image: url(../images/button_background_hover.jpg);
+	-moz-box-shadow: inset 0px 0px 3px #6f6f6f;
+	-webkit-box-shadow: inset 0px 0px 3px #6f6f6f;
+	box-shadow: inset 0px 0px 3px #6f6f6f;}
+
+.detailmenue ul li.active a {
+	color: #ffffff;
+	background-image: url(../images/button_background_active.jpg);}
 	
 .input {
 	border: 1px solid #AAAAAA;

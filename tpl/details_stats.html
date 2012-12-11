@@ -2,22 +2,28 @@
 <div id='details'>
 	<table>
 		<tr>
-			<th>Zeit</th>
-			<th>CO</th>
-			<th>NO<sub>2</sub></th>
-			<th>Temperatur</th>
-			<th>Luftfeuchtigkeit</th>
+			<th>Time</th>
+			<th>Latitude</th>
+			<th>Longitude</th>
+			<th>Temperature</th>
+			<th>Humidity</th>
+			<th>Acceleration</th>
+			<th>Brightness</th>
 		</tr>
 		{+tableRow}
 		<tr>
 			<td>{t}</td>
-			<td>{co}</td>
-			<td>{no2}</td>
+			<td>{lat}</td>
+			<td>{lon}</td>
 			<td>{temp}</td>
 			<td>{hum}</td>
+			<td>{acc}</td>
+			<td>{brig}</td>
 		</tr>
 		{-tableRow}
 	</table>
 </div>
+<h2>Debug-XML</h2>
+<pre style="width: 700px; word-wrap: break-word;">{debugxml}</pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
