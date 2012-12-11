@@ -128,8 +128,7 @@ h2 {
 	line-height: 30px;}
 	
 #details {
-	width: 80%;
-	min-width: 600px;
+	width: 100%;
 	text-align: left;
 	margin-top: 15px;
 	border: 1px solid #999999;
@@ -153,8 +152,6 @@ h2 {
 }
 	
 .detailmenue {
-	width: 80%;
-	min-width: 600px;
 	padding-left: 20px;
 	padding-bottom: 11px;}
 
