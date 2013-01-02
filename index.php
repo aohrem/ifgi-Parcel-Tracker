@@ -177,7 +177,59 @@ switch ( $s ) {
 					}
 				break;
 				case 'diagram':
+					// get data from cosm API
+					include('cosm_api.inc.php');
+					$cosmAPI = new CosmAPI();
 					
+					// set parameters for the cosm-API request
+					$start = date('Y-m-d\TH:i:s\Z', time() - 21600);	// 21600 = 6 hours, 604800 = one week
+					$end = date('Y-m-d\TH:i:s\Z', time());
+					$interval = 0;
+					$per_page = 500;
+					
+					if ( ! $xml = $cosmAPI->readFeed($feedid, $start, $end, $per_page, $interval, '') ) {
+						die('Could not read cosm API');
+					}
+					else {
+						// parse xml string
+						$dataArray = $cosmAPI->parseXML($xml);
+						
+						// replace debugxml in template
+						$tpl = tpl_replace($tpl, 'debugxml', htmlentities($xml));
+						
+						if ( $dataArray ) {
+							// sort sensor data by timestamp (keys of the data array)
+							ksort($dataArray, SORT_NUMERIC);
+							
+							// iterate sensor data
+							$i = 1;
+							foreach ( $dataArray as $time => $val ) {
+								// if there is no data, show a -
+								if ( ! isset($val['temp']) ) { $val['temp'] = '0'; }
+								if ( ! isset($val['hum']) ) { $val['hum'] = '0'; }
+								if ( ! isset($val['acc']) ) { $val['acc'] = '0'; }
+								if ( ! isset($val['brig']) ) { $val['brig'] = '0'; }
+								
+								// copy table row and fill in sensor data for one timestamp
+								$tpl = copy_code($tpl, 'diagram_data');
+								$tpl = tpl_replace_once($tpl, 't', date('d.m.Y H:i', $time));
+								$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
+								$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
+								$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
+								$tpl = tpl_replace_once($tpl, 'brig', $val['brig']);
+								
+								if ( count($dataArray) == $i ) {
+									$tpl = tpl_replace_once($tpl, ',', '');
+								}
+								else {
+									$tpl = tpl_replace_once($tpl, ',', ',');
+								}
+								$i++;
+							}
+						}
+						// delete the last row
+						$tpl = clean_code($tpl, 'diagram_data');
+					}
 				break;
 				case 'map':
 					

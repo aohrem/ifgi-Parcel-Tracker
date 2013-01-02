@@ -3,38 +3,44 @@
 		private $url = 'http://api.cosm.com/v2/feeds';
 		private $api_key = 'S_fFBZ0WcgkikDf29YcwEnVtLmiSAKx1RmgvUFQ0bndFZz0g';
 		private $request_url;
+		private $debug_mode = true;
 		
 		// sends HTTP GET request to the cosm API and returns the answered xml with the feed data
 		public function readFeed($feedid, $start, $end, $per_page, $interval, $duration) {
-			// set stream options
-			$opts = array(
-			  'http' => array('ignore_errors' => true)
-			);
+			if ( ! $this->debug_mode ) {
+				// set stream options
+				$opts = array(
+				  'http' => array('ignore_errors' => true)
+				);
 
-			// create the stream context
-			$context = stream_context_create($opts);
-			
-			// set parameters if they are not empty
-			if ( $start != '' ) {
-				$start = '&start='.$start;
+				// create the stream context
+				$context = stream_context_create($opts);
+				
+				// set parameters if they are not empty
+				if ( $start != '' ) {
+					$start = '&start='.$start;
+				}
+				if ( $end != '' ) {
+					$end = '&end='.$end;
+				}
+				if ( $per_page != '' ) {
+					$per_page = '&per_page='.$per_page;
+				}			
+				if ( $interval != '' ) {
+					$interval = '&interval='.$interval;
+				}
+				if ( $duration != '' ) {
+					$duration = '&duration='.$duration;
+				}
+				
+				$requestUrl = $this->url.'/'.$feedid.'.xml?key='.$this->api_key.$start.$end.$per_page.$interval.$duration;
+				
+				// open the file using the defined context
+				return file_get_contents($requestUrl, false, $context);
 			}
-			if ( $end != '' ) {
-				$end = '&end='.$end;
+			else {
+				return read_xml('test_feed');
 			}
-			if ( $per_page != '' ) {
-				$per_page = '&per_page='.$per_page;
-			}			
-			if ( $interval != '' ) {
-				$interval = '&interval='.$interval;
-			}
-			if ( $duration != '' ) {
-				$duration = '&duration='.$duration;
-			}
-			
-			$requestUrl = $this->url.'/'.$feedid.'.xml?key='.$this->api_key.$start.$end.$per_page.$interval.$duration;
-			
-			// open the file using the defined context
-			return file_get_contents($requestUrl, false, $context);
 		}
 		
 		// creates a new cosm feed with title $title
