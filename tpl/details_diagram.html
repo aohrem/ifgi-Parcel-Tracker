@@ -13,21 +13,47 @@
 		// instantiates the pie chart, passes in the data and
 		// draws it.
 		function drawChart() {
-		var data = google.visualization.arrayToDataTable([
-			['Date / Time', 'Temperature (Celsius)', 'Humidity (%)', 'Acceleration', 'Brightness'],
-			{+diagram_data}
-			['{t}', {temp}, {hum}, {acc}, {brig}]{,}
-			{-diagram_data}
-		]);
+		    var dataTable = new google.visualization.DataTable();
+			dataTable.addColumn('datetime', 'Date / Time');
+			dataTable.addColumn('number', 'Temperature');
+			dataTable.addColumn({type: 'string', role: 'tooltip','p': {'html': true}});
+			dataTable.addColumn('number', 'Humidity');
+			dataTable.addColumn({type: 'string', role: 'tooltip','p': {'html': true}});
+			dataTable.addColumn('number', 'Brightness');
+			dataTable.addColumn({type: 'string', role: 'tooltip','p': {'html': true}});
+			dataTable.addColumn('number', 'Acceleration');
+			dataTable.addColumn({type: 'string', role: 'tooltip','p': {'html': true}});
+			
+			dataTable.addRows([
+				{+diagram_data}
+				[new Date({t}),
+				{temp}, '<div class="tooltip"><b>{lt}</b><br>Temperature: {temp} &deg;C</div>',
+				{hum}, '<div class="tooltip"><b>{lt}</b><br>Humidity: {hum} %</div>',
+				{brig}, '<div class="tooltip"><b>{lt}</b><br>Brightness: {brig}</div>',
+				{acc}, '<div class="tooltip"><b>{lt}</b><br>Acceleration: {acc}</div>']{,}
+				{-diagram_data}
+			]);
+			
+			var options = {
+				//curveType: 'function',
+				height: 550,
+				colors: ['#D62A1E', '#7AA1EB', '#F7DB6A', '#423D3F'],
+				legend: {position: 'bottom', textStyle: {fontSize: 18, fontName: 'Calibri'}},
+				backgroundColor: '#EFEFEF',
+				chartArea:{top: 50, width:'85%', height: '70%'},
+				vAxis: {title: 'Values'},
+				hAxis: {title: 'Date / Time', format: 'dd.MM.y H:mm'},
+				tooltip: {isHtml: true}
+			};
 
-		var options = {
-			title: 'Sensor data',
-			height: 600
-		};
-
-		var chart = new google.visualization.LineChart(document.getElementById('diagram'));
-			chart.draw(data, options);
+			var chart = new google.visualization.LineChart(document.getElementById('diagram'));
+			chart.draw(dataTable, options);
 		}
+		
+		window.onresize = function(event) {
+			drawChart();
+		}
+		
     </script>
 	<div id="diagram"></div>
 </div>

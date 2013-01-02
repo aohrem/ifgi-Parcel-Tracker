@@ -8,9 +8,15 @@ header {
 	background-image: url(../images/header_background.png);
 	text-align: left;
 	vertical-align: middle;
+	display: compact;}
+	
+header img {
+	border: 0px;}
+
+header a {
 	color: #FFFFFF;
 	font-size: 40pt;
-	display: compact;}
+	text-decoration: none;}
 
 #content {
 	margin: 30px auto;
@@ -184,7 +190,12 @@ h2 {
 .detailmenue ul li.active a {
 	color: #ffffff;
 	background-image: url(../images/button_background_active.jpg);}
-	
+
+.tooltip {
+	margin: 10px;
+	font-size: 16px;
+}
+
 .input {
 	border: 1px solid #AAAAAA;
 	padding: 6px 20px;

@@ -132,7 +132,7 @@ switch ( $s ) {
 					$cosmAPI = new CosmAPI();
 					
 					// set parameters for the cosm-API request
-					$start = date('Y-m-d\TH:i:s\Z', time() - 21600);	// 21600 = 6 hours, 604800 = one week
+					$start = date('Y-m-d\TH:i:s\Z', time() - 604800);	// 21600 = 6 hours, 604800 = one week
 					$end = date('Y-m-d\TH:i:s\Z', time());
 					$interval = 0;
 					$per_page = 500;
@@ -182,7 +182,7 @@ switch ( $s ) {
 					$cosmAPI = new CosmAPI();
 					
 					// set parameters for the cosm-API request
-					$start = date('Y-m-d\TH:i:s\Z', time() - 21600);	// 21600 = 6 hours, 604800 = one week
+					$start = date('Y-m-d\TH:i:s\Z', time() - 604800);	// 21600 = 6 hours, 604800 = one week
 					$end = date('Y-m-d\TH:i:s\Z', time());
 					$interval = 0;
 					$per_page = 500;
@@ -204,7 +204,7 @@ switch ( $s ) {
 							// iterate sensor data
 							$i = 1;
 							foreach ( $dataArray as $time => $val ) {
-								// if there is no data, show a -
+								// if there is no data, set value to 0
 								if ( ! isset($val['temp']) ) { $val['temp'] = '0'; }
 								if ( ! isset($val['hum']) ) { $val['hum'] = '0'; }
 								if ( ! isset($val['acc']) ) { $val['acc'] = '0'; }
@@ -212,10 +212,18 @@ switch ( $s ) {
 								
 								// copy table row and fill in sensor data for one timestamp
 								$tpl = copy_code($tpl, 'diagram_data');
-								$tpl = tpl_replace_once($tpl, 't', date('d.m.Y H:i', $time));
+								$tpl = tpl_replace_once($tpl, 't', date('Y, m-1, d, H, i', $time));
+								$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
+								$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
 								$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
 								$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
+								$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
+								$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
 								$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
+								$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
+								$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
+								$tpl = tpl_replace_once($tpl, 'brig', $val['brig']);
+								$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
 								$tpl = tpl_replace_once($tpl, 'brig', $val['brig']);
 								
 								if ( count($dataArray) == $i ) {
