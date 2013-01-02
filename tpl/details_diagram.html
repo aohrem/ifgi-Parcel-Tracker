@@ -16,13 +16,13 @@
 		    var dataTable = new google.visualization.DataTable();
 			dataTable.addColumn('datetime', 'Date / Time');
 			dataTable.addColumn('number', 'Temperature');
-			dataTable.addColumn({type: 'string', role: 'tooltip','p': {'html': true}});
+			dataTable.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
 			dataTable.addColumn('number', 'Humidity');
-			dataTable.addColumn({type: 'string', role: 'tooltip','p': {'html': true}});
+			dataTable.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
 			dataTable.addColumn('number', 'Brightness');
-			dataTable.addColumn({type: 'string', role: 'tooltip','p': {'html': true}});
+			dataTable.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
 			dataTable.addColumn('number', 'Acceleration');
-			dataTable.addColumn({type: 'string', role: 'tooltip','p': {'html': true}});
+			dataTable.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
 			
 			dataTable.addRows([
 				{+diagram_data}
@@ -38,7 +38,7 @@
 				//curveType: 'function',
 				height: 550,
 				colors: ['#D62A1E', '#7AA1EB', '#F7DB6A', '#423D3F'],
-				legend: {position: 'bottom', textStyle: {fontSize: 18, fontName: 'Calibri'}},
+				legend: {position: 'bottom', textStyle: {fontSize: 18, fontName: 'Calibri, Arial, sans-serif'}},
 				backgroundColor: '#EFEFEF',
 				chartArea:{top: 50, width:'85%', height: '70%'},
 				vAxis: {title: 'Values'},
@@ -57,7 +57,5 @@
     </script>
 	<div id="diagram"></div>
 </div>
-<h2>Debug-XML</h2>
-<pre style="width: 95%; word-wrap: break-word;">{debugxml}</pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>

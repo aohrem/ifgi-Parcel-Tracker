@@ -32,8 +32,13 @@
 	}
 
 	function read_xml($filename) {
-		$f = fopen('xml/'.$filename.'.xml', 'r');
-		return fread($f, filesize('xml/'.$filename.'.xml'));
+		if ( file_exists('xml/'.$filename.'.xml') ) {
+			$f = fopen('xml/'.$filename.'.xml', 'r');
+			return fread($f, filesize('xml/'.$filename.'.xml'));
+		}
+		else {
+			return false;
+		}
 	}
 
 	// if there is a feed id, replace the template placeholder with it

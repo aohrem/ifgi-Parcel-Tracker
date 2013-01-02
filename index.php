@@ -132,49 +132,41 @@ switch ( $s ) {
 					$cosmAPI = new CosmAPI();
 					
 					// set parameters for the cosm-API request
-					$start = date('Y-m-d\TH:i:s\Z', time() - 604800);	// 21600 = 6 hours, 604800 = one week
+					$start = date('Y-m-d\TH:i:s\Z', time() - 2419200);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
 					$end = date('Y-m-d\TH:i:s\Z', time());
-					$interval = 0;
-					$per_page = 500;
+					$interval = 1800;
+					$limit = 500;
 					
-					if ( ! $xml = $cosmAPI->readFeed($feedid, $start, $end, $per_page, $interval, '') ) {
-						die('Could not read cosm API');
-					}
-					else {
-						// parse xml string
-						$dataArray = $cosmAPI->parseXML($xml);
+					// parse xml string
+					$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '');
+					
+					if ( $dataArray ) {
+						// sort sensor data by timestamp (keys of the data array)
+						ksort($dataArray, SORT_NUMERIC);
 						
-						// replace debugxml in template
-						$tpl = tpl_replace($tpl, 'debugxml', htmlentities($xml));
-						
-						if ( $dataArray ) {
-							// sort sensor data by timestamp (keys of the data array)
-							ksort($dataArray, SORT_NUMERIC);
+						// iterate sensor data
+						foreach ( $dataArray as $time => $val ) {
+							// if there is no data, show a -
+							if ( ! isset($val['lat']) ) { $val['lat'] = '-'; }
+							if ( ! isset($val['lon']) ) { $val['lon'] = '-'; }
+							if ( ! isset($val['temp']) ) { $val['temp'] = '-'; }
+							if ( ! isset($val['hum']) ) { $val['hum'] = '-'; }
+							if ( ! isset($val['acc']) ) { $val['acc'] = '-'; }
+							if ( ! isset($val['brig']) ) { $val['brig'] = '-'; }
 							
-							// iterate sensor data
-							foreach ( $dataArray as $time => $val ) {
-								// if there is no data, show a -
-								if ( ! isset($val['lat']) ) { $val['lat'] = '-'; }
-								if ( ! isset($val['lon']) ) { $val['lon'] = '-'; }
-								if ( ! isset($val['temp']) ) { $val['temp'] = '-'; }
-								if ( ! isset($val['hum']) ) { $val['hum'] = '-'; }
-								if ( ! isset($val['acc']) ) { $val['acc'] = '-'; }
-								if ( ! isset($val['brig']) ) { $val['brig'] = '-'; }
-								
-								// copy table row and fill in sensor data for one timestamp
-								$tpl = copy_code($tpl, 'tableRow');
-								$tpl = tpl_replace_once($tpl, 't', date('d.m.Y H:i', $time));
-								$tpl = tpl_replace_once($tpl, 'lat', $val['lat']);
-								$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
-								$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
-								$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
-								$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
-								$tpl = tpl_replace_once($tpl, 'brig', $val['brig']);
-							}
+							// copy table row and fill in sensor data for one timestamp
+							$tpl = copy_code($tpl, 'tableRow');
+							$tpl = tpl_replace_once($tpl, 't', date('d.m.Y H:i', $time));
+							$tpl = tpl_replace_once($tpl, 'lat', $val['lat']);
+							$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
+							$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
+							$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
+							$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
+							$tpl = tpl_replace_once($tpl, 'brig', $val['brig']);
 						}
-						// delete the last row
-						$tpl = clean_code($tpl, 'tableRow');
 					}
+					// delete the last row
+					$tpl = clean_code($tpl, 'tableRow');
 				break;
 				case 'diagram':
 					// get data from cosm API
@@ -182,62 +174,54 @@ switch ( $s ) {
 					$cosmAPI = new CosmAPI();
 					
 					// set parameters for the cosm-API request
-					$start = date('Y-m-d\TH:i:s\Z', time() - 604800);	// 21600 = 6 hours, 604800 = one week
+					$start = date('Y-m-d\TH:i:s\Z', time() - 2419200);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
 					$end = date('Y-m-d\TH:i:s\Z', time());
-					$interval = 0;
-					$per_page = 500;
+					$interval = 1800;
+					$limit = 500;
 					
-					if ( ! $xml = $cosmAPI->readFeed($feedid, $start, $end, $per_page, $interval, '') ) {
-						die('Could not read cosm API');
-					}
-					else {
-						// parse xml string
-						$dataArray = $cosmAPI->parseXML($xml);
+					// parse xml string
+					$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '');
+					
+					if ( $dataArray ) {
+						// sort sensor data by timestamp (keys of the data array)
+						ksort($dataArray, SORT_NUMERIC);
 						
-						// replace debugxml in template
-						$tpl = tpl_replace($tpl, 'debugxml', htmlentities($xml));
-						
-						if ( $dataArray ) {
-							// sort sensor data by timestamp (keys of the data array)
-							ksort($dataArray, SORT_NUMERIC);
+						// iterate sensor data
+						$i = 1;
+						foreach ( $dataArray as $time => $val ) {
+							// if there is no data, set value to 0
+							if ( ! isset($val['temp']) ) { $val['temp'] = '0'; }
+							if ( ! isset($val['hum']) ) { $val['hum'] = '0'; }
+							if ( ! isset($val['acc']) ) { $val['acc'] = '0'; }
+							if ( ! isset($val['brig']) ) { $val['brig'] = '0'; }
 							
-							// iterate sensor data
-							$i = 1;
-							foreach ( $dataArray as $time => $val ) {
-								// if there is no data, set value to 0
-								if ( ! isset($val['temp']) ) { $val['temp'] = '0'; }
-								if ( ! isset($val['hum']) ) { $val['hum'] = '0'; }
-								if ( ! isset($val['acc']) ) { $val['acc'] = '0'; }
-								if ( ! isset($val['brig']) ) { $val['brig'] = '0'; }
-								
-								// copy table row and fill in sensor data for one timestamp
-								$tpl = copy_code($tpl, 'diagram_data');
-								$tpl = tpl_replace_once($tpl, 't', date('Y, m-1, d, H, i', $time));
-								$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
-								$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
-								$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
-								$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
-								$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
-								$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
-								$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
-								$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
-								$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
-								$tpl = tpl_replace_once($tpl, 'brig', $val['brig']);
-								$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
-								$tpl = tpl_replace_once($tpl, 'brig', $val['brig']);
-								
-								if ( count($dataArray) == $i ) {
-									$tpl = tpl_replace_once($tpl, ',', '');
-								}
-								else {
-									$tpl = tpl_replace_once($tpl, ',', ',');
-								}
-								$i++;
+							// copy table row and fill in sensor data for one timestamp
+							$tpl = copy_code($tpl, 'diagram_data');
+							$tpl = tpl_replace_once($tpl, 't', date('Y, m-1, d, H, i', $time));
+							$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
+							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
+							$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
+							$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
+							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
+							$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
+							$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
+							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
+							$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
+							$tpl = tpl_replace_once($tpl, 'brig', $val['brig']);
+							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
+							$tpl = tpl_replace_once($tpl, 'brig', $val['brig']);
+							
+							if ( count($dataArray) == $i ) {
+								$tpl = tpl_replace_once($tpl, ',', '');
 							}
+							else {
+								$tpl = tpl_replace_once($tpl, ',', ',');
+							}
+							$i++;
 						}
-						// delete the last row
-						$tpl = clean_code($tpl, 'diagram_data');
 					}
+					// delete the last row
+					$tpl = clean_code($tpl, 'diagram_data');
 				break;
 				case 'map':
 					
