@@ -8,11 +8,24 @@
 		// Set a callback to run when the Google Visualization API is loaded.
 		google.setOnLoadCallback(drawChart);
 
-
+		var columns = [0,1,2];
+		
+		var options = {
+			//curveType: 'function',
+			height: 550,
+			colors: ['#D62A1E'],
+			legend: {position: 'none'/*, textStyle: {fontSize: 18, fontName: 'Calibri, Arial, sans-serif'}*/},
+			backgroundColor: '#EFEFEF',
+			chartArea:{top: 40, width:'85%', height: '70%'},
+			vAxis: {title: 'Temperature (Degrees Celsius)'},
+			hAxis: {title: 'Date / Time', format: 'dd.MM.y H:mm'},
+			tooltip: {isHtml: true}
+		};
+		
 		// Callback that creates and populates a data table, 
 		// instantiates the pie chart, passes in the data and
 		// draws it.
-		function drawChart() {
+		function drawChart() {		
 		    var dataTable = new google.visualization.DataTable();
 			dataTable.addColumn('datetime', 'Date / Time');
 			dataTable.addColumn('number', 'Temperature');
@@ -34,27 +47,55 @@
 				{-diagram_data}
 			]);
 			
-			var options = {
-				//curveType: 'function',
-				height: 550,
-				colors: ['#D62A1E', '#7AA1EB', '#F7DB6A', '#423D3F'],
-				legend: {position: 'bottom', textStyle: {fontSize: 18, fontName: 'Calibri, Arial, sans-serif'}},
-				backgroundColor: '#EFEFEF',
-				chartArea:{top: 50, width:'85%', height: '70%'},
-				vAxis: {title: 'Values'},
-				hAxis: {title: 'Date / Time', format: 'dd.MM.y H:mm'},
-				tooltip: {isHtml: true}
-			};
+			var view = new google.visualization.DataView(dataTable);
+			view.setColumns(columns);
 
 			var chart = new google.visualization.LineChart(document.getElementById('diagram'));
-			chart.draw(dataTable, options);
+			chart.draw(view, options);
 		}
 		
 		window.onresize = function(event) {
 			drawChart();
 		}
 		
+		function temp() {
+			columns = [0,1,2];
+			options['vAxis'] = {title: 'Temperature (Degrees Celsius)'};
+			options['colors'] = ['#D62A1E'];
+			
+			drawChart();
+		}
+		
+		function hum() {
+			columns = [0,3,4];
+			options['vAxis'] = {title: 'Humidity (%)'};
+			options['colors'] = ['#7AA1EB'];
+			
+			drawChart();
+		}
+		
+		function brig() {
+			columns = [0,7,8];
+			options['vAxis'] = {title: 'Brightness'};
+			options['colors'] = ['#F7DB6A'];
+			
+			drawChart();
+		}
+		
+		function acc() {
+			columns = [0,5,6];
+			options['vAxis'] = {title: 'Acceleration'};
+			options['colors'] = ['#423D3F'];
+			
+			drawChart();
+		}
     </script>
+	<div id="sensor_chooser">
+		<span onClick="temp();"><div class="temp_box"></div>Temperature</span><br>
+		<span onClick="hum();"><div class="hum_box"></div>Humidity</span><br>
+		<span onClick="brig();"><div class="brig_box"></div>Brightness</span><br>
+		<span onClick="acc();"><div class="acc_box"></div>Acceleration</span>
+	</div>
 	<div id="diagram"></div>
 </div>
 <p>&nbsp;</p>

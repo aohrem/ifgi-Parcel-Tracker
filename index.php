@@ -124,9 +124,16 @@ switch ( $s ) {
 				$p = 'stats';
 			}
 			
+			$css_active = " class='active'";
+			$details_active = '';
+			$diagram_active = '';
+			$map_active = '';
+			
 			// show stats, diagram or map
 			switch ( $p ) {
 				case 'stats':
+					$details_active = $css_active;
+					
 					// get data from cosm API
 					include('cosm_api.inc.php');
 					$cosmAPI = new CosmAPI();
@@ -169,6 +176,8 @@ switch ( $s ) {
 					$tpl = clean_code($tpl, 'tableRow');
 				break;
 				case 'diagram':
+					$diagram_active = $css_active;
+					
 					// get data from cosm API
 					include('cosm_api.inc.php');
 					$cosmAPI = new CosmAPI();
@@ -224,9 +233,13 @@ switch ( $s ) {
 					$tpl = clean_code($tpl, 'diagram_data');
 				break;
 				case 'map':
-					
+					$map_active = $css_active;
 				break;
 			}
+			
+			$tpl = tpl_replace($tpl, 'details_active', $details_active);
+			$tpl = tpl_replace($tpl, 'diagram_active', $diagram_active);
+			$tpl = tpl_replace($tpl, 'map_active', $map_active);
 		}
 	break;
 	// error handling

@@ -187,6 +187,13 @@ h2 {
 	-webkit-box-shadow: inset 0px 0px 3px #6f6f6f;
 	box-shadow: inset 0px 0px 3px #6f6f6f;}
 
+.detailmenue ul li a.active {
+	color: #ffffff;
+	background-image: url(../images/button_background_hover.jpg);
+	-moz-box-shadow: inset 0px 0px 18px #6f6f6f;
+	-webkit-box-shadow: inset 0px 0px 18px #6f6f6f;
+	box-shadow: inset 0px 0px 18px #6f6f6f;}
+
 .detailmenue ul li.active a {
 	color: #ffffff;
 	background-image: url(../images/button_background_active.jpg);}
@@ -242,3 +249,57 @@ table tr td {
 
 .topaligned {
 	vertical-align: top;}
+
+#sensor_chooser {
+	width: 180px;
+	float: left;
+	padding: 30px;
+	padding-top: 50px;
+}
+
+#sensor_chooser span:hover {
+	text-decoration: none;
+	color: #000000;
+	cursor: pointer;
+}
+
+#sensor_chooser .temp_box {
+	width: 18px;
+	height: 18px;
+	background-color: #D62A1E;
+	float: left;
+	margin-right: 10px;
+	margin-top: 4px;
+}
+
+#sensor_chooser .hum_box {
+	width: 18px;
+	height: 18px;
+	background-color: #7AA1EB;
+	float: left;
+	margin-right: 10px;
+	margin-top: 4px;
+}
+
+#sensor_chooser .acc_box {
+	width: 18px;
+	height: 18px;
+	background-color: #423D3F;
+	float: left;
+	margin-right: 10px;
+	margin-top: 4px;
+}
+
+#sensor_chooser .brig_box {
+	width: 18px;
+	height: 18px;
+	background-color: #F7DB6A;
+	float: left;
+	margin-right: 10px;
+	margin-top: 4px;
+}
+
+#diagram {
+	margin-top: 10px;
+	margin-left: 180px;
+}
