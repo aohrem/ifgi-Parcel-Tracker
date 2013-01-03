@@ -234,6 +234,38 @@ switch ( $s ) {
 				break;
 				case 'map':
 					$map_active = $css_active;
+					
+					// get data from cosm API
+					include('cosm_api.inc.php');
+					$cosmAPI = new CosmAPI();
+					
+					// set parameters for the cosm-API request
+					$start = date('Y-m-d\TH:i:s\Z', time() - 2419200);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
+					$end = date('Y-m-d\TH:i:s\Z', time());
+					$interval = 1800;
+					$limit = 500;
+					
+					// parse xml string
+					$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '');
+					
+					if ( $dataArray ) {
+						// sort sensor data by timestamp (keys of the data array)
+						ksort($dataArray, SORT_NUMERIC);
+						
+						// iterate sensor data
+						foreach ( $dataArray as $time => $val ) {
+							// if there is no data, set value to 0
+							if ( ! isset($val['lat']) ) { $val['lat'] = '0'; }
+							if ( ! isset($val['lon']) ) { $val['lon'] = '0'; }
+							
+							// copy table row and fill in sensor data for one timestamp
+							$tpl = copy_code($tpl, 'map_point');
+							$tpl = tpl_replace_once($tpl, 'lat', $val['lat']);
+							$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
+						}
+					}
+					// delete the last row
+					$tpl = clean_code($tpl, 'map_point');
 				break;
 			}
 			
