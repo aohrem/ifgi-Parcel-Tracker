@@ -15,7 +15,9 @@
 	latlngs.push([{lat}, {lon}]);
 	{-map_point}
 
-	L.polyline(latlngs, {color: 'darkgreen'}).addTo(map);
+	var polyline = L.polyline(latlngs, {color: 'darkgreen'}).addTo(map);
+	
+	map.fitBounds(polyline.getBounds());
 </script>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
