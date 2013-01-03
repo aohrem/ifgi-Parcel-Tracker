@@ -32,8 +32,6 @@
 			dataTable.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
 			dataTable.addColumn('number', 'Humidity');
 			dataTable.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
-			dataTable.addColumn('number', 'Brightness');
-			dataTable.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
 			dataTable.addColumn('number', 'Acceleration');
 			dataTable.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
 			
@@ -42,7 +40,6 @@
 				[new Date({t}),
 				{temp}, '<div class="tooltip"><b>{lt}</b><br>Temperature: {temp} &deg;C</div>',
 				{hum}, '<div class="tooltip"><b>{lt}</b><br>Humidity: {hum} %</div>',
-				{brig}, '<div class="tooltip"><b>{lt}</b><br>Brightness: {brig}</div>',
 				{acc}, '<div class="tooltip"><b>{lt}</b><br>Acceleration: {acc}</div>']{,}
 				{-diagram_data}
 			]);
@@ -74,14 +71,6 @@
 			drawChart();
 		}
 		
-		function brig() {
-			columns = [0,7,8];
-			options['vAxis'] = {title: 'Brightness'};
-			options['colors'] = ['#F7DB6A'];
-			
-			drawChart();
-		}
-		
 		function acc() {
 			columns = [0,5,6];
 			options['vAxis'] = {title: 'Acceleration'};
@@ -93,7 +82,6 @@
 	<div id="sensor_chooser">
 		<span onClick="temp();"><div class="temp_box"></div>Temperature</span><br>
 		<span onClick="hum();"><div class="hum_box"></div>Humidity</span><br>
-		<span onClick="brig();"><div class="brig_box"></div>Brightness</span><br>
 		<span onClick="acc();"><div class="acc_box"></div>Acceleration</span>
 	</div>
 	<div id="diagram"></div>

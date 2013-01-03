@@ -120,7 +120,7 @@ switch ( $s ) {
 			$tpl = tpl_replace($tpl, 'feedid', $feedid);
 			
 			// if there's no or a wrong page set, use stats page as default
-			if ( $p != 'stats' && $p != 'diagram' && $p != 'map' ) {
+			if ( $p != 'stats' && $p != 'diagram' && $p != 'map' && $p != 'events' ) {
 				$p = 'stats';
 			}
 			
@@ -128,6 +128,7 @@ switch ( $s ) {
 			$details_active = '';
 			$diagram_active = '';
 			$map_active = '';
+			$events_active = '';
 			
 			// show stats, diagram or map
 			switch ( $p ) {
@@ -202,7 +203,6 @@ switch ( $s ) {
 							if ( ! isset($val['temp']) ) { $val['temp'] = '0'; }
 							if ( ! isset($val['hum']) ) { $val['hum'] = '0'; }
 							if ( ! isset($val['acc']) ) { $val['acc'] = '0'; }
-							if ( ! isset($val['brig']) ) { $val['brig'] = '0'; }
 							
 							// copy table row and fill in sensor data for one timestamp
 							$tpl = copy_code($tpl, 'diagram_data');
@@ -216,9 +216,6 @@ switch ( $s ) {
 							$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
 							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
 							$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
-							$tpl = tpl_replace_once($tpl, 'brig', $val['brig']);
-							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
-							$tpl = tpl_replace_once($tpl, 'brig', $val['brig']);
 							
 							if ( count($dataArray) == $i ) {
 								$tpl = tpl_replace_once($tpl, ',', '');
@@ -269,11 +266,15 @@ switch ( $s ) {
 					// delete the last row
 					$tpl = clean_code($tpl, 'map_point');
 				break;
+				case 'events':
+					$events_active = $css_active;
+				break;
 			}
 			
 			$tpl = tpl_replace($tpl, 'details_active', $details_active);
 			$tpl = tpl_replace($tpl, 'diagram_active', $diagram_active);
 			$tpl = tpl_replace($tpl, 'map_active', $map_active);
+			$tpl = tpl_replace($tpl, 'events_active', $events_active);
 		}
 	break;
 	// error handling
