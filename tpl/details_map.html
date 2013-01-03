@@ -13,6 +13,7 @@
 	latlngs = new Array();
 	{+map_point}
 	latlngs.push([{lat}, {lon}]);
+	L.marker([{lat}, {lon}]).addTo(map);
 	{-map_point}
 
 	var polyline = L.polyline(latlngs, {color: 'darkgreen'}).addTo(map);

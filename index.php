@@ -262,6 +262,8 @@ switch ( $s ) {
 							$tpl = copy_code($tpl, 'map_point');
 							$tpl = tpl_replace_once($tpl, 'lat', $val['lat']);
 							$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
+							$tpl = tpl_replace_once($tpl, 'lat', $val['lat']);
+							$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
 						}
 					}
 					// delete the last row
