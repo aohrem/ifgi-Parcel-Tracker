@@ -119,9 +119,9 @@ switch ( $s ) {
 			$tpl = tpl_replace($tpl, 'description', nl2br(htmlentities($row->description)));
 			$tpl = tpl_replace($tpl, 'feedid', $feedid);
 			
-			// if there's no or a wrong page set, use stats page as default
+			// if there's no or a wrong page set, use map page as default
 			if ( $p != 'stats' && $p != 'diagram' && $p != 'map' && $p != 'events' ) {
-				$p = 'stats';
+				$p = 'map';
 			}
 			
 			$css_active = " class='active'";
@@ -164,7 +164,7 @@ switch ( $s ) {
 							
 							// copy table row and fill in sensor data for one timestamp
 							$tpl = copy_code($tpl, 'tableRow');
-							$tpl = tpl_replace_once($tpl, 't', date('d.m.Y H:i', $time));
+							$tpl = tpl_replace_once($tpl, 't', date('d.m.Y, g:i a', $time));
 							$tpl = tpl_replace_once($tpl, 'lat', $val['lat']);
 							$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
 							$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
@@ -208,13 +208,13 @@ switch ( $s ) {
 							$tpl = copy_code($tpl, 'diagram_data');
 							$tpl = tpl_replace_once($tpl, 't', date('Y, m-1, d, H, i', $time));
 							$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
-							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
+							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y, g:i a', $time));
 							$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
 							$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
-							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
+							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y, g:i a', $time));
 							$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
 							$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
-							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y H:i', $time));
+							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y, g:i a', $time));
 							$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
 							
 							if ( count($dataArray) == $i ) {
@@ -268,6 +268,52 @@ switch ( $s ) {
 				break;
 				case 'events':
 					$events_active = $css_active;
+					
+					// get data from cosm API
+					include('cosm_api.inc.php');
+					$cosmAPI = new CosmAPI();
+					
+					// set parameters for the cosm-API request
+					$start = date('Y-m-d\TH:i:s\Z', time() - 2419200);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
+					$end = date('Y-m-d\TH:i:s\Z', time());
+					$interval = 1800;
+					$limit = 500;
+					
+					// parse xml string
+					$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '');
+					
+					if ( $dataArray ) {
+						// sort sensor data by timestamp (keys of the data array)
+						ksort($dataArray, SORT_NUMERIC);
+						
+						$parcel_opened = false;
+						
+						// iterate sensor data
+						foreach ( $dataArray as $time => $val ) {
+							// if there is no data, set value to 0
+							if ( ! isset($val['brig']) ) {
+								continue;
+							}
+							else {
+								$parcel_opened = true;
+								
+								// copy table row and fill in sensor data for one timestamp
+								$tpl = copy_code($tpl, 'opening_events');
+								$tpl = tpl_replace_once($tpl, 'event', 'Parcel opened on '.date('d.m.Y, g:i a', $time).'.');
+							}
+						}
+					}
+					// delete the last row
+					$tpl = clean_code($tpl, 'opening_events');
+					
+					if ( $parcel_opened ) {
+						$tpl = tpl_replace($tpl, 'state_open', 'open');
+						$tpl = tpl_replace($tpl, 'state_open_text', 'Parcel opened');
+					}
+					else {
+						$tpl = tpl_replace($tpl, 'state_open', 'closed');
+						$tpl = tpl_replace($tpl, 'state_open_text', 'Parcel closed');
+					}
 				break;
 			}
 			

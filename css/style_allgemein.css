@@ -156,6 +156,10 @@ h2 {
 #details table td {
 	border-bottom: 1px solid #DDDDDD;
 }
+
+.map {
+	top: -1px;
+}
 	
 .detailmenue {
 	padding-left: 20px;
@@ -309,8 +313,32 @@ table tr td {
 	width: 250px;
 	float: left;
 	padding: 30px;
+	padding-bottom: 15px;
 	background-color: #DADADA;
 	-moz-box-shadow: 0px 0px 10px #a7a7a7;
 	-webkit-box-shadow: 0px 0px 10px #a7a7a7;
 	box-shadow: 0px 0px	10px #a7a7a7;}
 }
+
+#opened img {
+	float: right;}
+	
+#opened div {
+	margin-left: 3px;
+	margin-top: 16px;
+	font-size: 22px;
+	float: right;
+	color: #444444;}
+	
+#opened ul {
+	list-style-type: none;
+	padding-top: 20px;
+	padding-left: 0px;}
+
+#opened ul li {
+	font-size: 15px;}
+
+.line {
+	width: 100%;
+	height: 1px;
+	background-color: #444444;}
