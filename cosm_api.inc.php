@@ -2,7 +2,7 @@
 	class CosmAPI {
 		private $url = 'http://api.cosm.com/v2/feeds';
 		private $api_key = 'S_fFBZ0WcgkikDf29YcwEnVtLmiSAKx1RmgvUFQ0bndFZz0g';
-		private $debug_mode = true;
+		private $debug_mode = false;
 		
 		// creates a new cosm feed with title $title
 		public function createFeed($title) {
@@ -53,7 +53,7 @@
 			}
 			
 			// define sensor abbreviations
-			$sensors = array('lat', 'lon', 'temp', 'hum', 'acc', 'brig');
+			$sensors = array('lat', 'lon', 'tmp', 'hum', 'acc', 'bri');
 			
 			foreach ( $sensors as $sensor ) {
 				if ( ! $this->debug_mode ) {

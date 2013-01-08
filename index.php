@@ -135,9 +135,9 @@ switch ( $s ) {
 			$cosmAPI = new CosmAPI();
 			
 			// set parameters for the cosm-API request
-			$start = date('Y-m-d\TH:i:s\Z', time() - 2419200);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
+			$start = date('Y-m-d\TH:i:s\Z', time() - 7200);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
 			$end = date('Y-m-d\TH:i:s\Z', time());
-			$interval = 1800;
+			$interval = 60;
 			$limit = 500;
 			
 			// parse xml string
@@ -157,20 +157,20 @@ switch ( $s ) {
 							// if there is no data, show a -
 							if ( ! isset($val['lat']) ) { $val['lat'] = '-'; }
 							if ( ! isset($val['lon']) ) { $val['lon'] = '-'; }
-							if ( ! isset($val['temp']) ) { $val['temp'] = '-'; }
+							if ( ! isset($val['tmp']) ) { $val['tmp'] = '-'; }
 							if ( ! isset($val['hum']) ) { $val['hum'] = '-'; }
 							if ( ! isset($val['acc']) ) { $val['acc'] = '-'; }
-							if ( ! isset($val['brig']) ) { $val['brig'] = '-'; }
+							if ( ! isset($val['bri']) ) { $val['bri'] = '-'; }
 							
 							// copy table row and fill in sensor data for one timestamp
 							$tpl = copy_code($tpl, 'tableRow');
 							$tpl = tpl_replace_once($tpl, 't', date('d.m.Y, g:i a', $time));
 							$tpl = tpl_replace_once($tpl, 'lat', $val['lat']);
 							$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
-							$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
+							$tpl = tpl_replace_once($tpl, 'temp', $val['tmp']);
 							$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
 							$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
-							$tpl = tpl_replace_once($tpl, 'brig', $val['brig']);
+							$tpl = tpl_replace_once($tpl, 'brig', $val['bri']);
 						}
 					}
 					// delete the last row
@@ -187,16 +187,16 @@ switch ( $s ) {
 						$i = 1;
 						foreach ( $dataArray as $time => $val ) {
 							// if there is no data, set value to 0
-							if ( ! isset($val['temp']) ) { $val['temp'] = '0'; }
+							if ( ! isset($val['tmp']) ) { $val['tmp'] = '0'; }
 							if ( ! isset($val['hum']) ) { $val['hum'] = '0'; }
 							if ( ! isset($val['acc']) ) { $val['acc'] = '0'; }
 							
 							// copy table row and fill in sensor data for one timestamp
 							$tpl = copy_code($tpl, 'diagram_data');
 							$tpl = tpl_replace_once($tpl, 't', date('Y, m-1, d, H, i', $time));
-							$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
+							$tpl = tpl_replace_once($tpl, 'temp', $val['tmp']);
 							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y, g:i a', $time));
-							$tpl = tpl_replace_once($tpl, 'temp', $val['temp']);
+							$tpl = tpl_replace_once($tpl, 'temp', $val['tmp']);
 							$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
 							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y, g:i a', $time));
 							$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
@@ -252,7 +252,7 @@ switch ( $s ) {
 						// iterate sensor data
 						foreach ( $dataArray as $time => $val ) {
 							// if there is no data, set value to 0
-							if ( ! isset($val['brig']) ) {
+							if ( ! isset($val['bri']) ) {
 								continue;
 							}
 							else {
