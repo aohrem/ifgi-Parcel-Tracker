@@ -130,23 +130,23 @@ switch ( $s ) {
 			$map_active = '';
 			$events_active = '';
 			
+			// get data from cosm API
+			include('cosm_api.inc.php');
+			$cosmAPI = new CosmAPI();
+			
+			// set parameters for the cosm-API request
+			$start = date('Y-m-d\TH:i:s\Z', time() - 2419200);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
+			$end = date('Y-m-d\TH:i:s\Z', time());
+			$interval = 1800;
+			$limit = 500;
+			
+			// parse xml string
+			$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '');
+			
 			// show stats, diagram or map
 			switch ( $p ) {
 				case 'stats':
 					$details_active = $css_active;
-					
-					// get data from cosm API
-					include('cosm_api.inc.php');
-					$cosmAPI = new CosmAPI();
-					
-					// set parameters for the cosm-API request
-					$start = date('Y-m-d\TH:i:s\Z', time() - 2419200);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
-					$end = date('Y-m-d\TH:i:s\Z', time());
-					$interval = 1800;
-					$limit = 500;
-					
-					// parse xml string
-					$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '');
 					
 					if ( $dataArray ) {
 						// sort sensor data by timestamp (keys of the data array)
@@ -178,19 +178,6 @@ switch ( $s ) {
 				break;
 				case 'diagram':
 					$diagram_active = $css_active;
-					
-					// get data from cosm API
-					include('cosm_api.inc.php');
-					$cosmAPI = new CosmAPI();
-					
-					// set parameters for the cosm-API request
-					$start = date('Y-m-d\TH:i:s\Z', time() - 2419200);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
-					$end = date('Y-m-d\TH:i:s\Z', time());
-					$interval = 1800;
-					$limit = 500;
-					
-					// parse xml string
-					$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '');
 					
 					if ( $dataArray ) {
 						// sort sensor data by timestamp (keys of the data array)
@@ -232,19 +219,6 @@ switch ( $s ) {
 				case 'map':
 					$map_active = $css_active;
 					
-					// get data from cosm API
-					include('cosm_api.inc.php');
-					$cosmAPI = new CosmAPI();
-					
-					// set parameters for the cosm-API request
-					$start = date('Y-m-d\TH:i:s\Z', time() - 2419200);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
-					$end = date('Y-m-d\TH:i:s\Z', time());
-					$interval = 1800;
-					$limit = 500;
-					
-					// parse xml string
-					$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '');
-					
 					if ( $dataArray ) {
 						// sort sensor data by timestamp (keys of the data array)
 						ksort($dataArray, SORT_NUMERIC);
@@ -268,19 +242,6 @@ switch ( $s ) {
 				break;
 				case 'events':
 					$events_active = $css_active;
-					
-					// get data from cosm API
-					include('cosm_api.inc.php');
-					$cosmAPI = new CosmAPI();
-					
-					// set parameters for the cosm-API request
-					$start = date('Y-m-d\TH:i:s\Z', time() - 2419200);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
-					$end = date('Y-m-d\TH:i:s\Z', time());
-					$interval = 1800;
-					$limit = 500;
-					
-					// parse xml string
-					$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '');
 					
 					if ( $dataArray ) {
 						// sort sensor data by timestamp (keys of the data array)
