@@ -7,18 +7,16 @@
 			<th>Longitude</th>
 			<th>Temperature</th>
 			<th>Humidity</th>
-			<th>Acceleration</th>
-			<th>Brightness</th>
+			<th>Options</th>
 		</tr>
 		{+tableRow}
 		<tr>
-			<td>{t}</td>
-			<td>{lat}</td>
-			<td>{lon}</td>
-			<td>{temp}</td>
-			<td>{hum}</td>
-			<td>{acc}</td>
-			<td>{brig}</td>
+			<td{row_active}><a name='{timestamp}'></a>{t}</td>
+			<td{row_active}>{lat}</td>
+			<td{row_active}>{lon}</td>
+			<td{row_active}>{temp}</td>
+			<td{row_active}>{hum}</td>
+			<td{row_active}><a href='index.php?s=details&amp;p=map&amp;fid={feedid}&amp;timestamp={timestamp}'><img src='images/map_icon.png' width='32' height='32' alt='Show on map'></a></td>
 		</tr>
 		{-tableRow}
 	</table>

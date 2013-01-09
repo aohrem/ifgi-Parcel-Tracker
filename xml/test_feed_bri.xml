@@ -1,6 +1,6 @@
 <eeml xmlns="http://www.eeml.org/xsd/0.5.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="0.5.1" xsi:schemaLocation="http://www.eeml.org/xsd/0.5.1 http://www.eeml.org/xsd/0.5.1/0.5.1.xsd">
 	<environment updated="2012-11-27T15:13:43.259146Z" created="2012-11-27T15:11:28.363081Z" id="88727" creator="https://cosm.com/users/kaolick">
-		<data id="brig">
+		<data id="bri">
 			<tag>brightness</tag>
 			<current_value at="2012-12-18T22:53:26.000000Z">20</current_value>
 			<max_value>45</max_value>

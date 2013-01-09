@@ -2,12 +2,22 @@
 <div id='details'>
 	<div id='opened'>
 		<div>{state_open_text}</div>
-		<img src="images/parcel_{state_open}.png" width="92" height="61" alt="{state_open_text}">
-		<div class="line"></div>
+		<img src='images/parcel_{state_open}.png' width='92' height='61' alt='{state_open_text}'>
+		<div class='line'></div>
 		<ul>
 			{+opening_events}
-			<li>{event}</li>
+			<li><a href='index.php?s=details&amp;p=map&amp;fid={feedid}&amp;time={opening_timestamp}'>{opening_event}</a></li>
 			{-opening_events}
+			{bool_opening_events}
+		</ul>
+	</div>
+	<div id='crash'>
+		<h3>Potential crash events</h3>
+		<ul>
+			{+crash_events}
+			<li><a href='index.php?s=details&amp;p=map&amp;fid={feedid}&amp;time={crash_timestamp}'>{crash_event}</a></li>
+			{-crash_events}
+			{bool_crash_events}
 		</ul>
 	</div>
 </div>

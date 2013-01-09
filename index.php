@@ -117,7 +117,6 @@ switch ( $s ) {
 			$tpl = tpl_replace($tpl, 'from', htmlentities($row->from));
 			$tpl = tpl_replace($tpl, 'to', htmlentities($row->to));
 			$tpl = tpl_replace($tpl, 'description', nl2br(htmlentities($row->description)));
-			$tpl = tpl_replace($tpl, 'feedid', $feedid);
 			
 			// if there's no or a wrong page set, use map page as default
 			if ( $p != 'stats' && $p != 'diagram' && $p != 'map' && $p != 'events' ) {
@@ -135,8 +134,8 @@ switch ( $s ) {
 			$cosmAPI = new CosmAPI();
 			
 			// set parameters for the cosm-API request
-			$start = date('Y-m-d\TH:i:s\Z', time() - 7200);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
-			$end = date('Y-m-d\TH:i:s\Z', time());
+			$start = date('Y-m-d\TH:i:s\Z', time() - 86400);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
+			$end = date('Y-m-d\TH:i:s\Z', time() - 86400 + 7200);
 			$interval = 60;
 			$limit = 500;
 			
@@ -146,6 +145,13 @@ switch ( $s ) {
 			// show stats, diagram or map
 			switch ( $p ) {
 				case 'stats':
+					if ( isset($_GET['time']) && is_numeric($_GET['time']) ) {
+						$active_time = $_GET['time'];
+					}
+					else {
+						$active_time = 0;
+					}
+					
 					$details_active = $css_active;
 					
 					if ( $dataArray ) {
@@ -159,18 +165,28 @@ switch ( $s ) {
 							if ( ! isset($val['lon']) ) { $val['lon'] = '-'; }
 							if ( ! isset($val['tmp']) ) { $val['tmp'] = '-'; }
 							if ( ! isset($val['hum']) ) { $val['hum'] = '-'; }
-							if ( ! isset($val['acc']) ) { $val['acc'] = '-'; }
-							if ( ! isset($val['bri']) ) { $val['bri'] = '-'; }
+							
+							// check if the row should be marked as active
+							if ( $time == $active_time ) {
+								$row_active = " class='row_active'";
+							}
+							else {
+								$row_active = '';
+							}
 							
 							// copy table row and fill in sensor data for one timestamp
 							$tpl = copy_code($tpl, 'tableRow');
+							$tpl = tpl_replace_once($tpl, 'timestamp', $time);
 							$tpl = tpl_replace_once($tpl, 't', date('d.m.Y, g:i a', $time));
 							$tpl = tpl_replace_once($tpl, 'lat', $val['lat']);
 							$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
 							$tpl = tpl_replace_once($tpl, 'temp', $val['tmp']);
 							$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
-							$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
-							$tpl = tpl_replace_once($tpl, 'brig', $val['bri']);
+							
+							// replace row active if row is active
+							for ( $i = 0; $i < 6; $i++ ) {
+								$tpl = tpl_replace_once($tpl, 'row_active', $row_active);
+							}
 						}
 					}
 					// delete the last row
@@ -203,6 +219,7 @@ switch ( $s ) {
 							$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
 							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y, g:i a', $time));
 							$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
+							$tpl = tpl_replace_once($tpl, 'timestamp', $time);
 							
 							if ( count($dataArray) == $i ) {
 								$tpl = tpl_replace_once($tpl, ',', '');
@@ -248,36 +265,63 @@ switch ( $s ) {
 						ksort($dataArray, SORT_NUMERIC);
 						
 						$parcel_opened = false;
+						$parcel_crash = false;
 						
 						// iterate sensor data
 						foreach ( $dataArray as $time => $val ) {
-							// if there is no data, set value to 0
-							if ( ! isset($val['bri']) ) {
+							// if there is no brightness or acceleration data, continue with next loop circle
+							if ( ! isset($val['bri']) && ! isset($val['acc']) ) {
 								continue;
 							}
 							else {
-								$parcel_opened = true;
+								if ( isset($val['bri']) ) {
+									$parcel_opened = true;
+									
+									// copy table row and fill in sensor data for one timestamp
+									$tpl = copy_code($tpl, 'opening_events');
+									$tpl = tpl_replace_once($tpl, 'opening_timestamp', $time);
+									$tpl = tpl_replace_once($tpl, 'opening_timestamp', $time);
+									$tpl = tpl_replace_once($tpl, 'opening_event', 'Parcel opened on '.date('d.m.Y, g:i a', $time).'.');
+								}
 								
-								// copy table row and fill in sensor data for one timestamp
-								$tpl = copy_code($tpl, 'opening_events');
-								$tpl = tpl_replace_once($tpl, 'event', 'Parcel opened on '.date('d.m.Y, g:i a', $time).'.');
+								if ( isset($val['acc']) ) {
+									$parcel_crashed = true;
+									
+									$tpl = copy_code($tpl, 'crash_events');
+									$tpl = tpl_replace_once($tpl, 'crash_timestamp', $time);
+									$tpl = tpl_replace_once($tpl, 'crash_timestamp', $time);
+									$tpl = tpl_replace_once($tpl, 'crash_event', 'Potential crash with '. $val['acc'] .' m/s<sup>2</sup> detected on '.date('d.m.Y, g:i a', $time).'.');
+								}
 							}
+							
+							
 						}
 					}
 					// delete the last row
 					$tpl = clean_code($tpl, 'opening_events');
+					$tpl = clean_code($tpl, 'crash_events');
 					
 					if ( $parcel_opened ) {
 						$tpl = tpl_replace($tpl, 'state_open', 'open');
 						$tpl = tpl_replace($tpl, 'state_open_text', 'Parcel opened');
+						$tpl = tpl_replace($tpl, 'bool_opening_events', '');
 					}
 					else {
 						$tpl = tpl_replace($tpl, 'state_open', 'closed');
 						$tpl = tpl_replace($tpl, 'state_open_text', 'Parcel closed');
+						$tpl = tpl_replace($tpl, 'bool_opening_events', '<li>No opening events.</li>');
+					}
+					
+					if ( $parcel_crashed ) {
+						$tpl = tpl_replace($tpl, 'bool_crash_events', '');
+					}
+					else {
+						$tpl = tpl_replace($tpl, 'bool_crash_events', '<li>No potential crash events.</li>');
 					}
 				break;
 			}
 			
+			$tpl = tpl_replace($tpl, 'feedid', $feedid);
 			$tpl = tpl_replace($tpl, 'details_active', $details_active);
 			$tpl = tpl_replace($tpl, 'diagram_active', $diagram_active);
 			$tpl = tpl_replace($tpl, 'map_active', $map_active);
