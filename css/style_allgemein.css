@@ -138,7 +138,7 @@ h2 {
 	text-align: left;
 	margin-top: 15px;
 	border: 1px solid #999999;
-	min-height: 600px;
+	min-height: 500px;
 	background-color: #EFEFEF;
 	-moz-box-shadow: 0px 0px 10px #999999;
 	-webkit-box-shadow: 0px 0px 10px #999999;
@@ -159,6 +159,7 @@ h2 {
 
 .map {
 	top: -1px;
+	height: 650px;
 }
 	
 .detailmenue {
@@ -241,8 +242,12 @@ h2 {
 	left: 0px;
 	top: -7px;}
 
+table {
+	min-width: 70%;
+	max-width: 100%;}
+
 table tr td {
-	padding: 5px;
+	padding: 3px;
 	margin: 0px;}
 
 .halfsizetable {
