@@ -134,8 +134,8 @@ switch ( $s ) {
 			$cosmAPI = new CosmAPI();
 			
 			// set parameters for the cosm-API request
-			$start = date('Y-m-d\TH:i:s\Z', time() - 86400);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
-			$end = date('Y-m-d\TH:i:s\Z', time() - 86400 + 7200);
+			$start = date('Y-m-d\TH:i:s\Z', time() - 21600);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
+			$end = date('Y-m-d\TH:i:s\Z', time());
 			$interval = 60;
 			$limit = 500;
 			
@@ -203,9 +203,9 @@ switch ( $s ) {
 						$i = 1;
 						foreach ( $dataArray as $time => $val ) {
 							// if there is no data, set value to 0
-							if ( ! isset($val['tmp']) ) { $val['tmp'] = '0'; }
-							if ( ! isset($val['hum']) ) { $val['hum'] = '0'; }
-							if ( ! isset($val['acc']) ) { $val['acc'] = '0'; }
+							if ( ! isset($val['tmp']) ) { $val['tmp'] = 'null'; }
+							if ( ! isset($val['hum']) ) { $val['hum'] = 'null'; }
+							if ( ! isset($val['acc']) ) { $val['acc'] = 'null'; }
 							
 							// copy table row and fill in sensor data for one timestamp
 							$tpl = copy_code($tpl, 'diagram_data');
@@ -243,8 +243,7 @@ switch ( $s ) {
 						// iterate sensor data
 						foreach ( $dataArray as $time => $val ) {
 							// if there is no data, set value to 0
-							if ( ! isset($val['lat']) ) { $val['lat'] = '0'; }
-							if ( ! isset($val['lon']) ) { $val['lon'] = '0'; }
+							if ( ! isset($val['lat']) || ! isset($val['lon']) ) { continue; }
 							
 							// copy table row and fill in sensor data for one timestamp
 							$tpl = copy_code($tpl, 'map_point');
@@ -265,7 +264,7 @@ switch ( $s ) {
 						ksort($dataArray, SORT_NUMERIC);
 						
 						$parcel_opened = false;
-						$parcel_crash = false;
+						$parcel_crashed = false;
 						
 						// iterate sensor data
 						foreach ( $dataArray as $time => $val ) {
