@@ -28,8 +28,59 @@
 			return false;
 		}
 		
+		// gets the creation time and the time the feed was last updated
+		public function getTimeframe($feedid) {
+			// set stream options
+			$opts['http'] = array('ignore_errors' => true);
+			// create the stream context
+			$context = stream_context_create($opts);
+			
+			if ( ! $this->debug_mode ) {
+				$requestUrl = $this->url.'/'.$feedid.'.xml?key='.$this->api_key;
+				
+				// get feed xml using the defined context and request url
+				$xml = file_get_contents($requestUrl, false, $context);					
+			}
+			// debug mode
+			else {
+				$xml = read_xml('test_feed');
+			}
+			
+			// parse feed xml
+			$xml = simplexml_load_string($xml, 'SimpleXMLExtended');
+			
+			$return = array();
+			
+			if ( isset($xml->environment) ) {
+				if ( $xml->environment->attribute('created') != '' ) {
+					$return['created'] = $xml->environment->attribute('created');
+				}
+				
+				if ( $xml->environment->attribute('updated') != '' ) {
+					$return['updated'] = strtotime(substr($xml->environment->attribute('updated'), 0, -11));
+				}
+				
+				if ( isset($xml->environment->data) ) {
+					foreach ( $xml->environment->data as $data ) {
+						if ( isset($data->current_value) ) {
+							if ( $data->current_value->attribute('at') != '' ) {
+								$updated = strtotime(substr($data->current_value->attribute('at'), 0, -11));
+								if ( $updated > $return['updated'] ) {
+									$return['updated'] = $updated;
+								}
+							}
+						}
+					}
+				}
+				
+				$return['updated'] = date('Y-m-d\TH:i:s\Z', $return['updated']);
+			}
+			
+			return $return;
+		}
+		
 		// parses cosm feed given in xml format and returns data as an array
-		public function parseXML($feedid, $start, $end, $limit, $interval, $duration) {
+		public function parseXML($feedid, $start, $end, $limit, $interval, $duration, $sensors) {
 			// set stream options
 			$opts['http'] = array('ignore_errors' => true);
 			// create the stream context
@@ -51,9 +102,6 @@
 			if ( $duration != '' ) {
 				$duration = '&duration='.$duration;
 			}
-			
-			// define sensor abbreviations
-			$sensors = array('lat', 'lon', 'tmp', 'hum', 'acc', 'bri');
 			
 			foreach ( $sensors as $sensor ) {
 				if ( ! $this->debug_mode ) {

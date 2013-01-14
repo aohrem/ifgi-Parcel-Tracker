@@ -133,18 +133,68 @@ switch ( $s ) {
 			include('cosm_api.inc.php');
 			$cosmAPI = new CosmAPI();
 			
-			// set parameters for the cosm-API request
-			$start = date('Y-m-d\TH:i:s\Z', time() - 21600);	// 21600 = 6 hours, 604800 = one week, 2419200 = 4 weeks
-			$end = date('Y-m-d\TH:i:s\Z', time());
-			$interval = 60;
-			$limit = 500;
+			$timeframe = $cosmAPI->getTimeframe($feedid);
+			$created = $timeframe['created'];
+			$updated = $timeframe['updated'];
 			
-			// parse xml string
-			$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '');
+			// get start and end time
+			if ( isset($_GET['start_date']) && isset($_GET['end_date']) && isset($_GET['start_time']) && isset($_GET['end_time']) ) {
+				$start = strtotime($_GET['start_date'].' '.$_GET['start_time']);
+				$end = strtotime($_GET['end_date'].' '.$_GET['end_time']);
+			}
+			else {
+				$start = strtotime(substr($created, 0, -1));
+				$end = strtotime(substr($updated, 0, -1));
+			}
+			
+			// set parameters for the cosm-API request
+			$timedifference = $end - $start;
+			$value_start_date = date('Y-m-d', $start);
+			$value_end_date = date('Y-m-d', $end);
+			$value_start_time = date('H:i', $start);
+			$value_end_time = date('H:i', $end);
+			$min_date = date('Y-m-d', strtotime(substr($created, 0, -1)));
+			$max_date = date('Y-m-d', strtotime(substr($updated, 0, -1)));
+			$start = date('Y-m-d\TH:i:s\Z', $start);
+			$end = date('Y-m-d\TH:i:s\Z', $end);
+			
+			$intervals = array(
+				21600 => 0,			// 6 hours
+				43200 => 30,		// 12 hours
+				86400 => 60,		// 24 hours
+				432000 => 300,		// 5 days
+				1209600 => 900,		// 14 days
+				2678400 => 1800,	// 31 days
+				7776000 => 10800,	// 90 days
+				15552000 => 21600	// 180 days
+			);
+			
+			// set interval
+			$interval = 21600;
+			foreach ( $intervals as $key => $val ) {
+				if ( $timedifference < $key ) {
+					$interval = $val;
+				}
+			}
+			$limit = 500;
 			
 			// show stats, diagram or map
 			switch ( $p ) {
 				case 'stats':
+					// replace start/end values/min/max
+					$tpl = tpl_replace($tpl, 'start_date_value', $value_start_date);
+					$tpl = tpl_replace($tpl, 'start_time_value', $value_start_time);
+					$tpl = tpl_replace($tpl, 'end_date_value', $value_end_date);
+					$tpl = tpl_replace($tpl, 'end_time_value', $value_end_time);
+					$tpl = tpl_replace($tpl, 'date_min', $min_date);
+					$tpl = tpl_replace($tpl, 'date_max', $max_date);
+					
+					// define sensor abbreviations
+					$sensors = array('lat', 'lon', 'tmp', 'hum');
+			
+					// parse xml string
+					$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '', $sensors);
+					
 					if ( isset($_GET['time']) && is_numeric($_GET['time']) ) {
 						$active_time = $_GET['time'];
 					}
@@ -193,6 +243,20 @@ switch ( $s ) {
 					$tpl = clean_code($tpl, 'tableRow');
 				break;
 				case 'diagram':
+					// replace start/end values/min/max
+					$tpl = tpl_replace($tpl, 'start_date_value', $value_start_date);
+					$tpl = tpl_replace($tpl, 'start_time_value', $value_start_time);
+					$tpl = tpl_replace($tpl, 'end_date_value', $value_end_date);
+					$tpl = tpl_replace($tpl, 'end_time_value', $value_end_time);
+					$tpl = tpl_replace($tpl, 'date_min', $min_date);
+					$tpl = tpl_replace($tpl, 'date_max', $max_date);
+					
+					// define sensor abbreviations
+					$sensors = array('tmp', 'hum', 'acc');
+			
+					// parse xml string
+					$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '', $sensors);
+					
 					$diagram_active = $css_active;
 					
 					if ( $dataArray ) {
@@ -234,6 +298,12 @@ switch ( $s ) {
 					$tpl = clean_code($tpl, 'diagram_data');
 				break;
 				case 'map':
+					// define sensor abbreviations
+					$sensors = array('lat', 'lon');
+			
+					// parse xml string
+					$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '', $sensors);
+					
 					$map_active = $css_active;
 					
 					if ( $dataArray ) {
@@ -257,6 +327,12 @@ switch ( $s ) {
 					$tpl = clean_code($tpl, 'map_point');
 				break;
 				case 'events':
+					// define sensor abbreviations
+					$sensors = array('bri', 'acc');
+			
+					// parse xml string
+					$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '', $sensors);
+					
 					$events_active = $css_active;
 					
 					if ( $dataArray ) {

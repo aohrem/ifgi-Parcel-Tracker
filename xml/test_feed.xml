@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eeml xmlns="http://www.eeml.org/xsd/0.5.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="0.5.1" xsi:schemaLocation="http://www.eeml.org/xsd/0.5.1 http://www.eeml.org/xsd/0.5.1/0.5.1.xsd">
+  <environment updated="2013-01-03T15:39:58.101390Z" created="2012-11-27T15:11:28.363081Z" id="88727" creator="https://cosm.com/users/kaolick">
+    <title>ipt_test_01</title>
+    <feed>https://api.cosm.com/v2/feeds/88727.xml</feed>
+    <status>frozen</status>
+    <private>false</private>
+    <location domain="physical" exposure="" disposition=""/>
+    <data id="bri">
+      <tag>brightness</tag>
+      <current_value at="2013-01-11T16:51:22.000000Z">0.836754620075226</current_value>
+      <max_value>1.0</max_value>
+      <min_value>0.0</min_value>
+    </data>
+    <data id="hum">
+      <tag>humidity</tag>
+      <current_value at="2013-01-11T16:51:32.000000Z">3.29999995231628</current_value>
+      <max_value>3.29999995231628</max_value>
+      <min_value>0.0</min_value>
+    </data>
+    <data id="lat">
+      <tag>latitude</tag>
+      <current_value at="2013-01-11T16:51:26.000000Z">51.9466597</current_value>
+      <max_value>51.9661739</max_value>
+      <min_value>51.9466597</min_value>
+    </data>
+    <data id="lon">
+      <tag>longitude</tag>
+      <current_value at="2013-01-11T16:51:26.000000Z">7.6358675</current_value>
+      <max_value>7.6372786</max_value>
+      <min_value>7.6020698</min_value>
+    </data>
+    <data id="tmp">
+      <tag>temperature</tag>
+      <current_value at="2013-01-11T16:51:32.000000Z">0.548387110233307</current_value>
+      <max_value>1.41290318965912</max_value>
+      <min_value>0.0</min_value>
+    </data>
+  </environment>
+</eeml>
