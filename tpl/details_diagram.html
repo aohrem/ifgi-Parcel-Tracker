@@ -92,7 +92,11 @@
 			drawChart();
 		}
     </script>
-	<div id="sensor_chooser">
+	<div id="sensor_chooser">	
+		<b>Sensor</b><br>
+		<span onClick="temp();"><div class="temp_box"></div>Temperature</span><br>
+		<span onClick="hum();"><div class="hum_box"></div>Humidity</span><br>
+		<span onClick="acc();"><div class="acc_box"></div>Acceleration</span><br><br>
 		<form action="index.php" method="get">
 			<input type="hidden" name="s" value="details">
 			<input type="hidden" name="p" value="diagram">
@@ -100,11 +104,8 @@
 			<b>Start time</b><br><input name="start_date" type="date" value="{start_date_value}" min="{date_min}" max="{date_max}" class="date"> <input name="start_time" type="time" value="{start_time_value}" class="time"><br>
 			<b>End time</b><br><input name="end_date" type="date" value="{end_date_value}" min="{date_min}" max="{date_max}" class="date"> <input name="end_time" type="time" value="{end_time_value}" class="time"><br>
 			<input type="submit" value="Change" class="submit">
-		</form><br>
-		<b>Sensor</b><br>
-		<span onClick="temp();"><div class="temp_box"></div>Temperature</span><br>
-		<span onClick="hum();"><div class="hum_box"></div>Humidity</span><br>
-		<span onClick="acc();"><div class="acc_box"></div>Acceleration</span></div>
+		</form>
+	</div>
 	<div id="diagram"></div>
 </div>
 <p>&nbsp;</p>
