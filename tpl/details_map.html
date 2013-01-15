@@ -10,9 +10,17 @@
 	
 	// Add Polyline to the map which contains the sensed coordiantes
 	latlngs = new Array();
+	
+	var pointIcon = L.icon({
+		iconUrl: 'images/reddot.png'
+	});
+	
 	{+map_point}
 	latlngs.push([{lat}, {lon}]);
-	L.marker([{lat}, {lon}]).addTo(map);
+	var point = new L.marker([{lat}, {lon}], {title: '{markertime}'});
+	point.setIcon(pointIcon);
+	point.bindPopup('{markertime}');
+	point.addTo(map);
 	{-map_point}
 
 	var polyline = L.polyline(latlngs, {color: 'darkgreen'}).addTo(map);

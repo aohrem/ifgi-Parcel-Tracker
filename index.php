@@ -321,6 +321,8 @@ switch ( $s ) {
 							$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
 							$tpl = tpl_replace_once($tpl, 'lat', $val['lat']);
 							$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
+							$tpl = tpl_replace_once($tpl, 'markertime', $time);
+							$tpl = tpl_replace_once($tpl, 'markertime', $time);
 						}
 					}
 					// delete the last row
