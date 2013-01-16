@@ -11,7 +11,7 @@
 		var columns = [0,1,2];
 		
 		var options = {
-			//curveType: 'function',
+			curveType: 'function',
 			height: 550,
 			colors: ['#D62A1E'],
 			legend: {position: 'none'/*, textStyle: {fontSize: 18, fontName: 'Calibri, Arial, sans-serif'}*/},
@@ -33,8 +33,6 @@
 			dataTable.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
 			dataTable.addColumn('number', 'Humidity');
 			dataTable.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
-			dataTable.addColumn('number', 'Acceleration');
-			dataTable.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
 			dataTable.addColumn('number', 'timestamp');
 			
 			dataTable.addRows([
@@ -42,7 +40,6 @@
 				[new Date({t}),
 				{temp}, '<div class="tooltip"><b>{lt}</b><br>Temperature: {temp} &deg;C</div>',
 				{hum}, '<div class="tooltip"><b>{lt}</b><br>Humidity: {hum} %</div>',
-				{acc}, '<div class="tooltip"><b>{lt}</b><br>Acceleration: {acc}</div>',
 				{timestamp}]{,}
 				{-diagram_data}
 			]);
@@ -83,20 +80,11 @@
 			
 			drawChart();
 		}
-		
-		function acc() {
-			columns = [0,5,6];
-			options['vAxis'] = {title: 'Acceleration'};
-			options['colors'] = ['#423D3F'];
-			
-			drawChart();
-		}
     </script>
 	<div id="sensor_chooser">	
 		<b>Sensor</b><br>
 		<span onClick="temp();"><div class="temp_box"></div>Temperature</span><br>
-		<span onClick="hum();"><div class="hum_box"></div>Humidity</span><br>
-		<span onClick="acc();"><div class="acc_box"></div>Acceleration</span><br><br>
+		<span onClick="hum();"><div class="hum_box"></div>Humidity</span><br><br>
 		<form action="index.php" method="get">
 			<input type="hidden" name="s" value="details">
 			<input type="hidden" name="p" value="diagram">

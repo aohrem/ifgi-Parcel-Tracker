@@ -215,7 +215,7 @@ switch ( $s ) {
 							// if there is no data, show a -
 							if ( ! isset($val['lat']) ) { $val['lat'] = '-'; }
 							if ( ! isset($val['lon']) ) { $val['lon'] = '-'; }
-							if ( ! isset($val['tmp']) ) { $val['tmp'] = '-'; }
+							if ( ! isset($val['tmp']) ) { $val['tmp'] = '-'; } else { $val['tmp'] = round(floatval($val['tmp']) * 100 + 2, 2).' &deg;C'; }
 							if ( ! isset($val['hum']) ) { $val['hum'] = '-'; }
 							
 							// check if the row should be marked as active
@@ -270,9 +270,8 @@ switch ( $s ) {
 						$i = 1;
 						foreach ( $dataArray as $time => $val ) {
 							// if there is no data, set value to 0
-							if ( ! isset($val['tmp']) ) { $val['tmp'] = 'null'; }
+							if ( ! isset($val['tmp']) ) { $val['tmp'] = 'null'; } else { $val['tmp'] = round(floatval($val['tmp']) * 100 + 2, 2); }
 							if ( ! isset($val['hum']) ) { $val['hum'] = 'null'; }
-							if ( ! isset($val['acc']) ) { $val['acc'] = 'null'; }
 							
 							// copy table row and fill in sensor data for one timestamp
 							$tpl = copy_code($tpl, 'diagram_data');
@@ -283,9 +282,6 @@ switch ( $s ) {
 							$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
 							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y, g:i a', $time));
 							$tpl = tpl_replace_once($tpl, 'hum', $val['hum']);
-							$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
-							$tpl = tpl_replace_once($tpl, 'lt', date('d.m.Y, g:i a', $time));
-							$tpl = tpl_replace_once($tpl, 'acc', $val['acc']);
 							$tpl = tpl_replace_once($tpl, 'timestamp', $time);
 							
 							if ( count($dataArray) == $i ) {
@@ -325,7 +321,7 @@ switch ( $s ) {
 							// if there is no data, set value to 0
 							if ( ! isset($val['lat']) || ! isset($val['lon']) ) { continue; }
 							if ( ! isset($val['tmp']) ) { $val['tmp'] = 'null'; }
-							else { $val['tmp'] = floatval($val['tmp']); }
+							else { $val['tmp'] = round(floatval($val['tmp']) * 100 + 2, 2)." &deg;C"; }
 							if ( ! isset($val['hum']) ) { $val['hum'] = 'null'; }
 							else { $val['hum'] = floatval($val['hum']); }
 							
@@ -346,7 +342,7 @@ switch ( $s ) {
 							$tpl = tpl_replace_once($tpl, 'markertime', date("d.m.Y, g:i a",$time));
 							$tpl = tpl_replace_once($tpl, 'markertime', date("d.m.Y, g:i a",$time));
 							if ( $val['tmp']!= "null" ) {
-								$tpl = tpl_replace_once($tpl, 'temp', "<br><u>Temp:</u> ".$val['tmp']."&deg;C");
+								$tpl = tpl_replace_once($tpl, 'temp', "<br><u>Temp:</u> ".$val['tmp']);
 							}
 							else {
 								$tpl = tpl_replace_once($tpl, 'temp', "");
