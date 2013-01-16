@@ -139,10 +139,12 @@ switch ( $s ) {
 			
 			// get start and end time
 			if ( isset($_GET['start_date']) && isset($_GET['end_date']) && isset($_GET['start_time']) && isset($_GET['end_time']) ) {
+				$times = '&amp;start_date='.$_GET['start_date'].'&amp;start_time='.$_GET['start_time'].'&amp;end_date='.$_GET['end_date'].'&amp;end_time='.$_GET['end_time'];
 				$start = strtotime($_GET['start_date'].' '.$_GET['start_time']);
 				$end = strtotime($_GET['end_date'].' '.$_GET['end_time']);
 			}
 			else {
+				$times = '';
 				$start = strtotime(substr($created, 0, -1));
 				$end = strtotime(substr($updated, 0, -1));
 			}
@@ -226,6 +228,7 @@ switch ( $s ) {
 							
 							// copy table row and fill in sensor data for one timestamp
 							$tpl = copy_code($tpl, 'tableRow');
+							$tpl = tpl_replace_once($tpl, 'timestamp', $time);
 							$tpl = tpl_replace_once($tpl, 'timestamp', $time);
 							$tpl = tpl_replace_once($tpl, 't', date('d.m.Y, g:i a', $time));
 							$tpl = tpl_replace_once($tpl, 'lat', $val['lat']);
@@ -403,6 +406,7 @@ switch ( $s ) {
 			$tpl = tpl_replace($tpl, 'diagram_active', $diagram_active);
 			$tpl = tpl_replace($tpl, 'map_active', $map_active);
 			$tpl = tpl_replace($tpl, 'events_active', $events_active);
+			$tpl = tpl_replace($tpl, 'times', $times);
 		}
 	break;
 	// error handling

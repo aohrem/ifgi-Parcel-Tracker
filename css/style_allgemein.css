@@ -334,6 +334,14 @@ table tr td {
 	font-size: 15px;
 	padding: 2px;
 }
+.timesmall {
+	width: 70px;
+	cursor: pointer;
+	margin-bottom: 10px;
+	font-family: Calibri, Arial, sans-serif;
+	font-size: 15px;
+	padding: 2px;
+}
 
 .submit {
 	width: 128px;
