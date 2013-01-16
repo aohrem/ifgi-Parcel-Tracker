@@ -309,6 +309,13 @@ switch ( $s ) {
 					
 					$map_active = $css_active;
 					
+					if ( isset($_GET['timestamp']) && is_numeric($_GET['timestamp']) ) {
+						$active_time = $_GET['timestamp'];
+					}
+					else {
+						$active_time = 0;
+					}
+					
 					if ( $dataArray ) {
 						// sort sensor data by timestamp (keys of the data array)
 						ksort($dataArray, SORT_NUMERIC);
@@ -321,6 +328,14 @@ switch ( $s ) {
 							else { $val['tmp'] = floatval($val['tmp']); }
 							if ( ! isset($val['hum']) ) { $val['hum'] = 'null'; }
 							else { $val['hum'] = floatval($val['hum']); }
+							
+							// check if the point should be marked as active
+							if ( $time == $active_time ) {
+								$point_active = "true";
+							}
+							else {
+								$point_active = "false";
+							}
 							
 							// copy table row and fill in sensor data for one timestamp
 							$tpl = copy_code($tpl, 'map_point');
@@ -344,6 +359,9 @@ switch ( $s ) {
 							}
 							$tpl = tpl_replace_once($tpl, 'timeanker', $time);
 							$tpl = tpl_replace_once($tpl, 'timeanker', $time);
+							$tpl = tpl_replace_once($tpl, 'fragnach', $point_active);
+							$tpl = tpl_replace_once($tpl, 'lat', $val['lat']);
+							$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
 						}
 					}
 					// delete the last row

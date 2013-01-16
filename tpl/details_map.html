@@ -16,17 +16,30 @@
 		iconAnchor: [12, 12]
 	});
 	
+	var pointIconFocus = L.icon({
+		iconUrl: 'images/waypointred.png',
+		iconAnchor: [12, 12]
+	});
+	
+	var focus = [51.962944, 7.628694,];
+	
 	{+map_point}
 	latlngs.push([{lat}, {lon}]);
 	var point = new L.marker([{lat}, {lon}], {title: '{markertime}'});
 	point.setIcon(pointIcon);
 	point.bindPopup('<b>{markertime}</b>{temp}{humid}<br><a href="index.php?s=details&p=stats&fid={feedid}&time={timeanker}#{timeanker}">Zum Tabelleneintrag</a>');
+	var xy = {fragnach};
+	if (xy) {
+		focus = [{lat}, {lon},];
+		point.setIcon(pointIconFocus);
+	}
 	point.addTo(map);
 	{-map_point}
 
 	var polyline = L.polyline(latlngs, {color: 'darkgreen'}).addTo(map);
 	
 	map.fitBounds(polyline.getBounds());
+	map.setView(focus, 10);
 </script>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
