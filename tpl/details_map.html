@@ -32,14 +32,13 @@
 	if (xy) {
 		focus = [{lat}, {lon},];
 		point.setIcon(pointIconFocus);
+		map.setView(focus, 17);
 	}
 	point.addTo(map);
 	{-map_point}
 
 	var polyline = L.polyline(latlngs, {color: 'darkgreen'}).addTo(map);
-	
 	map.fitBounds(polyline.getBounds());
-	map.setView(focus, 10);
 </script>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
