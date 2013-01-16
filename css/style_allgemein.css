@@ -424,3 +424,8 @@ table tr td {
 #crash ul{
 	margin-top: -20px;
 }
+
+#crash img {
+	margin-top: 10px;
+	float: right;
+}

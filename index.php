@@ -358,12 +358,12 @@ switch ( $s ) {
 					
 					$events_active = $css_active;
 					
+					$parcel_opened = false;
+					$parcel_crashed = false;
+					
 					if ( $dataArray ) {
 						// sort sensor data by timestamp (keys of the data array)
 						ksort($dataArray, SORT_NUMERIC);
-						
-						$parcel_opened = false;
-						$parcel_crashed = false;
 						
 						// iterate sensor data
 						foreach ( $dataArray as $time => $val ) {
@@ -405,15 +405,17 @@ switch ( $s ) {
 						$tpl = tpl_replace($tpl, 'bool_opening_events', '');
 					}
 					else {
-						$tpl = tpl_replace($tpl, 'state_open', 'closed');
+						$tpl = tpl_replace($tpl, 'state_open', 'normal');
 						$tpl = tpl_replace($tpl, 'state_open_text', 'Parcel closed');
 						$tpl = tpl_replace($tpl, 'bool_opening_events', '<li>No opening events.</li>');
 					}
 					
 					if ( $parcel_crashed ) {
+						$tpl = tpl_replace($tpl, 'state_crash', 'crashed');
 						$tpl = tpl_replace($tpl, 'bool_crash_events', '');
 					}
 					else {
+						$tpl = tpl_replace($tpl, 'state_crash', 'normal');
 						$tpl = tpl_replace($tpl, 'bool_crash_events', '<li>No potential crash events.</li>');
 					}
 				break;
