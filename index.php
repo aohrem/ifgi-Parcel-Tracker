@@ -302,7 +302,7 @@ switch ( $s ) {
 				break;
 				case 'map':
 					// define sensor abbreviations
-					$sensors = array('lat', 'lon');
+					$sensors = array('lat', 'lon', 'tmp', 'hum');
 			
 					// parse xml string
 					$dataArray = $cosmAPI->parseXML($feedid, $start, $end, $limit, $interval, '', $sensors);
@@ -317,6 +317,10 @@ switch ( $s ) {
 						foreach ( $dataArray as $time => $val ) {
 							// if there is no data, set value to 0
 							if ( ! isset($val['lat']) || ! isset($val['lon']) ) { continue; }
+							if ( ! isset($val['tmp']) ) { $val['tmp'] = 'null'; }
+							else { $val['tmp'] = floatval($val['tmp']); }
+							if ( ! isset($val['hum']) ) { $val['hum'] = 'null'; }
+							else { $val['hum'] = floatval($val['hum']); }
 							
 							// copy table row and fill in sensor data for one timestamp
 							$tpl = copy_code($tpl, 'map_point');
@@ -324,8 +328,22 @@ switch ( $s ) {
 							$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
 							$tpl = tpl_replace_once($tpl, 'lat', $val['lat']);
 							$tpl = tpl_replace_once($tpl, 'lon', $val['lon']);
-							$tpl = tpl_replace_once($tpl, 'markertime', $time);
-							$tpl = tpl_replace_once($tpl, 'markertime', $time);
+							$tpl = tpl_replace_once($tpl, 'markertime', date("d.m.Y, g:i a",$time));
+							$tpl = tpl_replace_once($tpl, 'markertime', date("d.m.Y, g:i a",$time));
+							if ( $val['tmp']!= "null" ) {
+								$tpl = tpl_replace_once($tpl, 'temp', "<br><u>Temp:</u> ".$val['tmp']."&deg;C");
+							}
+							else {
+								$tpl = tpl_replace_once($tpl, 'temp', "");
+							}
+							if ( $val['hum']!= "null" ) {
+								$tpl = tpl_replace_once($tpl, 'humid', "<br><u>Hum:</u> ".$val['hum']."%");
+							}
+							else {
+								$tpl = tpl_replace_once($tpl, 'humid', "");
+							}
+							$tpl = tpl_replace_once($tpl, 'timeanker', $time);
+							$tpl = tpl_replace_once($tpl, 'timeanker', $time);
 						}
 					}
 					// delete the last row

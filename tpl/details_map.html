@@ -19,7 +19,7 @@
 	latlngs.push([{lat}, {lon}]);
 	var point = new L.marker([{lat}, {lon}], {title: '{markertime}'});
 	point.setIcon(pointIcon);
-	point.bindPopup('{markertime}');
+	point.bindPopup('<b>{markertime}</b>{temp}{humid}<br><a href="index.php?s=details&p=stats&fid={feedid}&time={timeanker}#{timeanker}">Zum Tabelleneintrag</a>');
 	point.addTo(map);
 	{-map_point}
 
