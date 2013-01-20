@@ -176,8 +176,10 @@ switch ( $s ) {
 			foreach ( $intervals as $key => $val ) {
 				if ( $timedifference < $key ) {
 					$interval = $val;
+					break;
 				}
 			}
+			
 			$limit = 500;
 			
 			// show stats, diagram or map
