@@ -414,18 +414,22 @@ table tr td {
 #crash {
 	margin: 30px;
 	margin-left: 370px;
-	padding: 5px 30px;
+	padding: 25px 30px 17px 30px;
 	background-color: #DADADA;
 	-moz-box-shadow: 0px 0px 10px #a7a7a7;
 	-webkit-box-shadow: 0px 0px 10px #a7a7a7;
-	box-shadow: 0px 0px	10px #a7a7a7;}
+	box-shadow: 0px 0px	10px #a7a7a7;
+	position:relative;
 }
 
-#crash ul{
-	margin-top: -20px;
+#crash h3 {
+	display:block;
+	padding-bottom:40px;
 }
 
 #crash img {
 	margin-top: 10px;
-	float: right;
+	position:absolute;
+	top:22px;
+	right:30px;
 }

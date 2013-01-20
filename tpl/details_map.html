@@ -27,7 +27,7 @@
 	latlngs.push([{lat}, {lon}]);
 	var point = new L.marker([{lat}, {lon}], {title: '{markertime}'});
 	point.setIcon(pointIcon);
-	point.bindPopup('<b>{markertime}</b>{temp}{humid}<br><a href="index.php?s=details&p=stats&fid={feedid}&time={timeanker}#{timeanker}">Zum Tabelleneintrag</a>');
+	point.bindPopup('<b>{markertime}</b>{temp}{humid}<br><a href="index.php?s=details&p=stats&fid={feedid}&time={timeanker}#{timeanker}">View stats</a>');
 	var xy = {fragnach};
 	if (xy) {
 		focus = [{lat}, {lon},];
