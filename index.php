@@ -218,7 +218,7 @@ switch ( $s ) {
 							if ( ! isset($val['lat']) ) { $val['lat'] = '-'; }
 							if ( ! isset($val['lon']) ) { $val['lon'] = '-'; }
 							if ( ! isset($val['tmp']) ) { $val['tmp'] = '-'; } else { $val['tmp'] = round(floatval($val['tmp']) * 100 + 2, 2).' &deg;C'; }
-							if ( ! isset($val['hum']) ) { $val['hum'] = '-'; } else { if ( floatval($val['hum']) == 0 ) { $val['hum'] = 0 .' %'; } else { $val['hum'] = round(28 * floatval($val['hum']) + 75, 2).' %'; } }
+							if ( ! isset($val['hum']) ) { $val['hum'] = '-'; } else { if ( floatval($val['hum']) == 0 ) { $val['hum'] = '< 75 %'; } else { $val['hum'] = round(28 * floatval($val['hum']) + 75, 2).' %'; } }
 							
 							// check if the row should be marked as active
 							if ( $time == $active_time ) {
@@ -273,7 +273,7 @@ switch ( $s ) {
 						foreach ( $dataArray as $time => $val ) {
 							// if there is no data, set value to 0
 							if ( ! isset($val['tmp']) ) { $val['tmp'] = 'null'; } else { $val['tmp'] = round(floatval($val['tmp']) * 100 + 2, 2); }
-							if ( ! isset($val['hum']) ) { $val['hum'] = 'null'; } else { if ( floatval($val['hum']) == 0 ) { $val['hum'] = 0; } else { $val['hum'] = round(28 * floatval($val['hum']) + 75, 2); } }
+							if ( ! isset($val['hum']) ) { $val['hum'] = 'null'; } else { if ( floatval($val['hum']) == 0 ) { $val['hum'] = 'null'; } else { $val['hum'] = round(28 * floatval($val['hum']) + 75, 2); } }
 							
 							// copy table row and fill in sensor data for one timestamp
 							$tpl = copy_code($tpl, 'diagram_data');
@@ -325,7 +325,7 @@ switch ( $s ) {
 							if ( ! isset($val['tmp']) ) { $val['tmp'] = 'null'; }
 							else { $val['tmp'] = round(floatval($val['tmp']) * 100 + 2, 2)." &deg;C"; }
 							if ( ! isset($val['hum']) ) { $val['hum'] = 'null'; }
-							else { if ( floatval($val['hum']) == 0 ) { $val['hum'] = 0 .' %'; } else { $val['hum'] = round(28 * floatval($val['hum']) + 75, 2).' %'; } }
+							else { if ( floatval($val['hum']) == 0 ) { $val['hum'] = '< 75 %'; } else { $val['hum'] = round(28 * floatval($val['hum']) + 75, 2).' %'; } }
 							
 							// check if the point should be marked as active
 							if ( $time == $active_time ) {
