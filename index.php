@@ -161,7 +161,7 @@ switch ( $s ) {
 			$end = date('Y-m-d\TH:i:s\Z', $end);
 			
 			$intervals = array(
-				21600 => 0,			// 6 hours
+				21600 => 1,			// 6 hours
 				43200 => 30,		// 12 hours
 				86400 => 60,		// 24 hours
 				432000 => 300,		// 5 days

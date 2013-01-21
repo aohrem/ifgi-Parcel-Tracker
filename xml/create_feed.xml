@@ -12,7 +12,7 @@
 		<data id="lon">
 			<tag>longitude</tag>
 		</data>
-		<data id="temp">
+		<data id="tmp">
 			<tag>temperature</tag>
 		</data>
 		<data id="hum">
@@ -21,7 +21,7 @@
 		<data id="acc">
 			<tag>acceleration</tag>
 		</data>
-		<data id="brig">
+		<data id="bri">
 			<tag>brightness</tag>
 		</data>
 	</environment>

@@ -22,7 +22,7 @@ header a {
 	margin: 30px auto;
 	width: 80%;
 	max-width: 1300px;
-	min-width: 700px;
+	min-width: 900px;
 	background-color: #ffffff;
 	text-align: center;
 	padding: 20px;
@@ -105,6 +105,7 @@ nav ul li.seperator {
 	margin-right: 25px;}
 
 #main {
+	overflow: hidden;
 	display: block;
 	text-align: justify;
 	background-image: url(../images/ifgi_logo.png);
@@ -419,17 +420,45 @@ table tr td {
 	-moz-box-shadow: 0px 0px 10px #a7a7a7;
 	-webkit-box-shadow: 0px 0px 10px #a7a7a7;
 	box-shadow: 0px 0px	10px #a7a7a7;
-	position:relative;
+	position: relative;
 }
 
 #crash h3 {
-	display:block;
-	padding-bottom:40px;
+	display: block;
+	padding-bottom: 40px;
 }
 
 #crash img {
 	margin-top: 10px;
-	position:absolute;
-	top:22px;
-	right:30px;
+	position: absolute;
+	top: 22px;
+	right: 30px;
+}
+
+#steps {
+	float: right;
+	position: relative;
+	text-align: center;
+	margin-bottom: 100px;
+	margin-left: 40px;
+}
+
+#steps img.point {
+	cursor: pointer;
+}
+
+#steps img.steps {
+	margin-top: 20px;
+	-moz-box-shadow: 0px 0px 10px #a7a7a7;
+	-webkit-box-shadow: 0px 0px 10px #a7a7a7;
+	box-shadow: 0px 0px	10px #a7a7a7;
+}
+
+#step {
+	position: relative;
+	text-align: right;
+	right: 20px;
+	top: 70px;
+	font-size: 50px;
+	font-family: Arial;
 }

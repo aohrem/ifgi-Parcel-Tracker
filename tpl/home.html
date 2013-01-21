@@ -1,4 +1,95 @@
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<script type="text/javascript">
+	var current_step = 1;
+	
+	function step(step) {
+		current_step = step;
+		
+		var filetypes = {
+			1: 'jpg',
+			2: 'jpg',
+			3: 'gif',
+			4: 'gif',
+			5: 'jpg',
+			6: 'jpg',
+			7: 'jpg',
+			8: 'jpg',
+			9: 'gif',
+			10: 'gif',
+			11: 'jpg',
+			12: 'jpg'
+		}
+		
+		var step_texts = {
+			1: 'To register a new parcel to the ifgi Parcel Tracker system, you\'ll first have to switch to the "Parcel Registration" Tab by clicking on the Button in the navigation bar at the top of this website.',
+			2: 'Before you complete the registration process you have to fill in the "Origin" and "Destination" fields and optionally set title and description. Afterwards confirm the registration with "Submit".',
+			3: 'Your Parcel information will now be sent to the cosm server ...',
+			4: '... which will generate a new feed and submit an ID to the ifgi Parcel Tracker website.',
+			5: 'The website will now display your "Parcel ID" which has to be entered in the main page of the ifgi Parcel Tracker App.',
+			6: 'Pressing the "Start" Button will ...',
+			7: '... start the tracking of your parcel ...',
+			8: '... which can be closed and dispatched now.',
+			9: 'Your Parcel will now send the periodically measured data to the cosm server ...',
+			10: '... which will store it and make it available for the ifgi Parcel Tracker website.',
+			11: 'To view the Parcel you can either click on the "View now" Button or enter the Parcel ID in the Search field in the navigation bar and confirm with the loupe-button right beside it.',
+			12: 'The Parcel overview will now show you a tab with the map of the route, the parcel has traveled so far, an "Events" tab with the crash- and opened-events, a "Diagram" tab to visualise the temperature- and humidity-data. The "Table" tab gives an overview of all measured data.'
+		}
+	
+		var step_img = document.getElementById("step_img");
+		step_img.src = 'images/home/' + current_step + '.' + filetypes[current_step];
+		
+		for ( var i = 1; i < 13; i++ ) {
+			var point = document.getElementById("step_" + i);
+			
+			if ( i == current_step ) {
+				point.src = 'images/point_active.png';
+			}
+			else {
+				point.src ='images/point.png';
+			}
+		}
+		
+		var step_text = document.getElementById('step_text');
+		step_text.innerHTML = "<b>Step " + current_step + ":</b> " + step_texts[current_step];
+		
+		var step_number = document.getElementById('step');
+		step_number.innerHTML = current_step;
+	}
+	
+	function next() {
+		if ( current_step < 12 ) {
+			current_step++;
+		}
+		step(current_step);
+	}
+	
+	function prev() {
+		if ( current_step > 1 ) {
+			current_step--;
+		}
+		step(current_step);
+	}
+</script>
+<p>The ifgi Parcel Tracker is a tracking system which allows you to keep your parcel's condition in sight. This Website can be used to register new parcles and to display the sensor data of parcels which are being shipped right now. The ifgi Parcel Tracker measures location-, temperature- and humidity and notices if the parcel crashes or is opened on it's way.</p>
+
+<div id='steps'>
+	<div id='step'>1</div>
+	<img src='images/home/1.jpg' width='550' height='350' alt='Step 1' id='step_img' class='steps'><br>
+	<img src='images/prev.png' width='16' height='10' alt='Previous step' class='point' onClick='prev();'>
+	<img src='images/point_active.png' width='10' height='10' alt='Step 1' id='step_1' class='point' onClick='step(1);'>
+	<img src='images/point.png' width='10' height='10' alt='Step 2' id='step_2' class='point' onClick='step(2);'>
+	<img src='images/point.png' width='10' height='10' alt='Step 3' id='step_3' class='point' onClick='step(3);'>
+	<img src='images/point.png' width='10' height='10' alt='Step 4' id='step_4' class='point' onClick='step(4);'>
+	<img src='images/point.png' width='10' height='10' alt='Step 5' id='step_5' class='point' onClick='step(5);'>
+	<img src='images/point.png' width='10' height='10' alt='Step 6' id='step_6' class='point' onClick='step(6);'>
+	<img src='images/point.png' width='10' height='10' alt='Step 7' id='step_7' class='point' onClick='step(7);'>
+	<img src='images/point.png' width='10' height='10' alt='Step 8' id='step_8' class='point' onClick='step(8);'>
+	<img src='images/point.png' width='10' height='10' alt='Step 9' id='step_9' class='point' onClick='step(9);'>
+	<img src='images/point.png' width='10' height='10' alt='Step 10' id='step_10' class='point' onClick='step(10);'>
+	<img src='images/point.png' width='10' height='10' alt='Step 11' id='step_11' class='point' onClick='step(11);'>
+	<img src='images/point.png' width='10' height='10' alt='Step 12' id='step_12' class='point' onClick='step(12);'>
+	<img src='images/next.png' width='16' height='10' alt='Next step' class='point' onClick='next();'>
+</div>
+<h2>Tutorial</h2>
+<p>To get an overview of the functionality of the ifgi Parcel Tracker feel free to view this short Tutorial.</p>
+<p><div id='step_text'><b>Step 1:</b> To register a new parcel to the ifgi Parcel Tracker system, you'll first have to switch to the "Parcel Registration" Tab by clicking on the Button in the navigation bar at the top of this website.</div></p>
+<p>Use the points or arrows below the image to go to the next step.</p>
