@@ -299,6 +299,14 @@ switch ( $s ) {
 					$tpl = clean_code($tpl, 'diagram_data');
 				break;
 				case 'map':
+					// replace start/end values/min/max
+					$tpl = tpl_replace($tpl, 'start_date_value', $value_start_date);
+					$tpl = tpl_replace($tpl, 'start_time_value', $value_start_time);
+					$tpl = tpl_replace($tpl, 'end_date_value', $value_end_date);
+					$tpl = tpl_replace($tpl, 'end_time_value', $value_end_time);
+					$tpl = tpl_replace($tpl, 'date_min', $min_date);
+					$tpl = tpl_replace($tpl, 'date_max', $max_date);
+					
 					// define sensor abbreviations
 					$sensors = array('lat', 'lon', 'tmp', 'hum');
 			

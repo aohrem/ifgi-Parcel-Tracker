@@ -73,7 +73,7 @@
 					}
 				}
 				
-				$return['updated'] = date('Y-m-d\TH:i:s\Z', $return['updated']);
+				$return['updated'] = date('Y-m-d\TH:i:s\Z', $return['updated'] + 14400);
 			}
 			
 			return $return;

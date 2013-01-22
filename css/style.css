@@ -356,6 +356,18 @@ table tr td {
 	box-shadow: 0px 0px 4px #DDDDDD;
 }
 
+.submit_small {
+	width: 100px;
+	border: 1px solid #AAAAAA;
+	padding: 3px 10px;
+	font-size: 14px;
+	font-weight: bold;
+	cursor: pointer;
+	-moz-box-shadow: 0px 0px 4px #DDDDDD;
+	-webkit-box-shadow: 0px 0px 4px #DDDDDD;
+	box-shadow: 0px 0px 4px #DDDDDD;
+}
+
 .table_timepicker {
 	text-align: left;
 	margin: 20px 35px;
