@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
 	var current_step = 1;
 	
 	function step(step) {
@@ -34,11 +34,11 @@
 			12: 'The Parcel overview will now show you a tab with the map of the route, the parcel has traveled so far, an "Events" tab with the crash- and opened-events, a "Diagram" tab to visualise the temperature- and humidity-data. The "Table" tab gives an overview of all measured data.'
 		}
 	
-		var step_img = document.getElementById("step_img");
+		var step_img = document.getElementById('step_img');
 		step_img.src = 'images/home/' + current_step + '.' + filetypes[current_step];
 		
 		for ( var i = 1; i < 13; i++ ) {
-			var point = document.getElementById("step_" + i);
+			var point = document.getElementById('step_' + i);
 			
 			if ( i == current_step ) {
 				point.src = 'images/point_active.png';
@@ -49,7 +49,7 @@
 		}
 		
 		var step_text = document.getElementById('step_text');
-		step_text.innerHTML = "<b>Step " + current_step + ":</b> " + step_texts[current_step];
+		step_text.innerHTML = '<b>Step ' + current_step + ':</b> ' + step_texts[current_step];
 		
 		var step_number = document.getElementById('step');
 		step_number.innerHTML = current_step;
@@ -91,5 +91,5 @@
 </div>
 <h2>Tutorial</h2>
 <p>To get an overview of the functionality of the ifgi Parcel Tracker feel free to view this short Tutorial.</p>
-<p><div id='step_text'><b>Step 1:</b> To register a new parcel to the ifgi Parcel Tracker system, you'll first have to switch to the "Parcel Registration" Tab by clicking on the Button in the navigation bar at the top of this website.</div></p>
+<p><div id='step_text'><b>Step 1:</b> To register a new parcel to the ifgi Parcel Tracker system, you'll first have to switch to the 'Parcel Registration' Tab by clicking on the Button in the navigation bar at the top of this website.</div></p>
 <p>Use the points or arrows below the image to go to the next step.</p>

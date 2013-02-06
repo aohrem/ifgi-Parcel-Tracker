@@ -4,27 +4,35 @@
 		private $api_key = 'S_fFBZ0WcgkikDf29YcwEnVtLmiSAKx1RmgvUFQ0bndFZz0g';
 		private $debug_mode = false;
 		
-		// creates a new cosm feed with title $title
+		// creates a new cosm feed with title $title, returns the feed id of the new cosm feed
 		public function createFeed($title) {
+			// get content for the HTTP POST request to cosm API
 			$xml = read_xml('create_feed');
+			
+			// replace title
 			$xml = tpl_replace($xml, 'title', $title);
 			
+			// open a new connection to the cosm API with curl-module
 			$ch = curl_init($this->url.'.xml?key='.$this->api_key);
 			
+			// set curl options (HTTP POST method with $xml as content, request response with header)
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_HEADER, 1);
+			
+			// parse the HTTP header of the response
 			$response_header = explode("\r", curl_exec($ch));
 			curl_close($ch);
 			
-			// search in the response header for the returned cosm feed id
+			// search in the response header for the returned cosm feed id and return it
 			foreach( $response_header as $value ) {
 				if ( strstr(strtolower($value), 'location:') ) {
 					return trim(str_replace('Location: '.$this->url.'/', '', $value));
 				}
 			}
 			
+			// if no feed id was found, return false
 			return false;
 		}
 		
@@ -50,21 +58,27 @@
 			$xml = simplexml_load_string($xml, 'SimpleXMLExtended');
 			
 			$return = array();
-			
 			if ( isset($xml->environment) ) {
+				// read date on which the feed was created
 				if ( $xml->environment->attribute('created') != '' ) {
 					$return['created'] = $xml->environment->attribute('created');
 				}
-				
+			
+				// read date on which the feed was last updated
 				if ( $xml->environment->attribute('updated') != '' ) {
+					// convert time format to a php timestamp for better comparability
 					$return['updated'] = strtotime(substr($xml->environment->attribute('updated'), 0, -11));
 				}
 				
+				// look if one of the datastreams was updated after the last update of the feed
 				if ( isset($xml->environment->data) ) {
 					foreach ( $xml->environment->data as $data ) {
 						if ( isset($data->current_value) ) {
 							if ( $data->current_value->attribute('at') != '' ) {
+								// convert time format to a php timestamp for better comparability
 								$updated = strtotime(substr($data->current_value->attribute('at'), 0, -11));
+								
+								// if last update of the datastream was after last update of the feed, use it
 								if ( $updated > $return['updated'] ) {
 									$return['updated'] = $updated;
 								}
@@ -73,6 +87,7 @@
 					}
 				}
 				
+				// re-convert timestamp to the cosm time format and add a time of 4 hours to compensate cosm delay
 				$return['updated'] = date('Y-m-d\TH:i:s\Z', $return['updated'] + 14400);
 			}
 			
@@ -103,8 +118,10 @@
 				$duration = '&duration='.$duration;
 			}
 			
+			// iterate sensors (given as array)
 			foreach ( $sensors as $sensor ) {
 				if ( ! $this->debug_mode ) {
+					// concatenate request url for the cosm API request via HTTP GET
 					$requestUrl = $this->url.'/'.$feedid.'/datastreams/'.$sensor.'.xml?key='.$this->api_key.$start.$end.$limit.$interval.$duration;
 					
 					// get feed xml using the defined context and request url
@@ -130,11 +147,12 @@
 				}
 			}
 			
-			if ( ! isset($dataArray) ) {
-				return false;
+			// check if sensor data array has been initialized successfully and return it
+			if ( isset($dataArray) ) {
+				return $dataArray;
 			}
 			else {
-				return $dataArray;
+				return false;
 			}
 		}
 	}
