@@ -48,7 +48,7 @@ if ( $dataArray ) {
 		}
 		// if the humdity value is 0, write '< 75 %' instead
 		else if ( floatval($val['hum']) == 0 ) {
-			$val['hum'] = '< 75 %';
+			$val['hum'] = '&lt; 75 %';
 		}
 		// calculate humidty value in percent
 		else {
